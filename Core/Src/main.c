@@ -21,7 +21,15 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <string.h>
+#include <stdio.h>
+#include <stdbool.h>
 
+#include "ucc5870.h"
+#include "ucc5870_regs.h"
+
+#include "UART.h"
+#include "PWM_timer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -60,6 +68,10 @@ DMA_HandleTypeDef hdma_tim8_up;
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
+
+volatile bool nFLT1_active = false;
+volatile bool nFLT2_active = false;
+volatile bool fault_event_pending = false;
 
 /* USER CODE END PV */
 
@@ -130,6 +142,30 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
+  UART_Transmit((uint8_t *)"Setup start\r\n", strlen("Setup start\r\n"), HAL_MAX_DELAY);
+
+  //initialize local UCC5870 regs
+  Init_UCC5870_Regs();
+
+  //initialize UCC5870
+  Init_UCC5870();
+
+  //start PWM timer DMA
+  if(PWM_timer_DMA_start() != HAL_OK)
+  {
+	    Error_Handler();
+  }
+
+  //start PWM timer
+  if(PWM_timer_start() != HAL_OK)
+  {
+	    Error_Handler();
+  }
+
+  printInverterStatus();
+
+  UART_Transmit((uint8_t *)"\n\nSetup end\r\n", strlen("\n\nSetup end\r\n"), HAL_MAX_DELAY);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -139,6 +175,26 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  if (fault_event_pending)
+	  {
+		  printInverterStatus();
+	      fault_event_pending = false;
+	  }
+
+	  // Re-arm logic: only when both cleared
+	  if (nFLT1_active && HAL_GPIO_ReadPin(PWM_BKIN_GPIO_Port, PWM_BKIN_Pin) == GPIO_PIN_SET)
+	  {
+	      nFLT1_active = false;
+	  }
+	  if (nFLT2_active && HAL_GPIO_ReadPin(PWM_BKIN2_GPIO_Port, PWM_BKIN2_Pin) == GPIO_PIN_SET)
+	  {
+	      nFLT2_active = false;
+	  }
+
+	  if (!nFLT1_active && !nFLT2_active)
+	  {
+	      __HAL_TIM_ENABLE_IT(&htim8, TIM_IT_BREAK);
+	  }
   }
   /* USER CODE END 3 */
 }
@@ -907,6 +963,26 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void HAL_TIMEx_BreakCallback(TIM_HandleTypeDef *htim)
+{
+    if (htim->Instance == TIM8 && !nFLT1_active)
+    {
+        nFLT1_active = true;
+        fault_event_pending = true;
+        __HAL_TIM_DISABLE_IT(htim, TIM_IT_BREAK); // mask until handled
+    }
+}
+
+void HAL_TIMEx_Break2Callback(TIM_HandleTypeDef *htim)
+{
+    if (htim->Instance == TIM8 && !nFLT2_active)
+    {
+        nFLT2_active = true;
+        fault_event_pending = true;
+        __HAL_TIM_DISABLE_IT(htim, TIM_IT_BREAK); // mask until handled
+    }
+}
 
 /* USER CODE END 4 */
 
