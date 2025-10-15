@@ -16,6 +16,25 @@
   *
   ******************************************************************************
   */
+
+
+/**
+ * @brief [Short one-line description of what the function does]
+ *
+ * [Optional longer description of the function.
+ * You can explain algorithm details, assumptions, or usage notes here.]
+ *
+ * @param[in]  param1   [Description of first parameter]
+ * @param[out] param2   [Description of second parameter, if it is modified]
+ * @param[in,out] param3 [Description if parameter is both input and output]
+ *
+ * @return HAL status (HAL_OK, HAL_ERROR, etc.)
+ *
+ * @note [Optional: add notes about side effects or usage requirements]
+ * @warning [Optional: add warnings about incorrect use]
+ */
+
+
 /* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -124,20 +143,22 @@ void Error_Handler(void);
 #define Debug_LED_GPIO_Port GPIOD
 #define SPI1_CS_Driver_Pin GPIO_PIN_1
 #define SPI1_CS_Driver_GPIO_Port GPIOG
-#define PWM_U_L_Pin GPIO_PIN_10
-#define PWM_U_L_GPIO_Port GPIOC
-#define PWM_V_L_Pin GPIO_PIN_11
-#define PWM_V_L_GPIO_Port GPIOC
-#define PWM_W_L_Pin GPIO_PIN_12
-#define PWM_W_L_GPIO_Port GPIOC
+#define PWM_UL_Pin GPIO_PIN_10
+#define PWM_UL_GPIO_Port GPIOC
+#define PWM_VL_Pin GPIO_PIN_11
+#define PWM_VL_GPIO_Port GPIOC
+#define PWM_WL_Pin GPIO_PIN_12
+#define PWM_WL_GPIO_Port GPIOC
 #define PWM_BKIN2_Pin GPIO_PIN_1
 #define PWM_BKIN2_GPIO_Port GPIOD
-#define PWM_U_H_Pin GPIO_PIN_6
-#define PWM_U_H_GPIO_Port GPIOB
-#define PWM_V_H_Pin GPIO_PIN_8
-#define PWM_V_H_GPIO_Port GPIOB
-#define PWM_W_H_Pin GPIO_PIN_9
-#define PWM_W_H_GPIO_Port GPIOB
+#define PWM_BKIN_Pin GPIO_PIN_2
+#define PWM_BKIN_GPIO_Port GPIOD
+#define PWM_UH_Pin GPIO_PIN_6
+#define PWM_UH_GPIO_Port GPIOB
+#define PWM_VH_Pin GPIO_PIN_8
+#define PWM_VH_GPIO_Port GPIOB
+#define PWM_WH_Pin GPIO_PIN_9
+#define PWM_WH_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

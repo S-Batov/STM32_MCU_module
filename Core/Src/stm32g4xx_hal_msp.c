@@ -730,12 +730,12 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)
     GPIO_InitStruct.Alternate = GPIO_AF6_TIM8;
     HAL_GPIO_Init(PWM_BKIN2_GPIO_Port, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = GPIO_PIN_2;
+    GPIO_InitStruct.Pin = PWM_BKIN_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     GPIO_InitStruct.Alternate = GPIO_AF4_TIM8;
-    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+    HAL_GPIO_Init(PWM_BKIN_GPIO_Port, &GPIO_InitStruct);
 
     /* TIM8 DMA Init */
     /* TIM8_UP Init */
@@ -787,21 +787,21 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* htim)
     PB8-BOOT0     ------> TIM8_CH2
     PB9     ------> TIM8_CH3
     */
-    GPIO_InitStruct.Pin = PWM_U_L_Pin|PWM_V_L_Pin|PWM_W_L_Pin;
+    GPIO_InitStruct.Pin = PWM_UL_Pin|PWM_VL_Pin|PWM_WL_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     GPIO_InitStruct.Alternate = GPIO_AF4_TIM8;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = PWM_U_H_Pin;
+    GPIO_InitStruct.Pin = PWM_UH_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     GPIO_InitStruct.Alternate = GPIO_AF5_TIM8;
-    HAL_GPIO_Init(PWM_U_H_GPIO_Port, &GPIO_InitStruct);
+    HAL_GPIO_Init(PWM_UH_GPIO_Port, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = PWM_V_H_Pin|PWM_W_H_Pin;
+    GPIO_InitStruct.Pin = PWM_VH_Pin|PWM_WH_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -871,11 +871,11 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* htim_base)
     PB8-BOOT0     ------> TIM8_CH2
     PB9     ------> TIM8_CH3
     */
-    HAL_GPIO_DeInit(GPIOC, PWM_U_L_Pin|PWM_V_L_Pin|PWM_W_L_Pin);
+    HAL_GPIO_DeInit(GPIOC, PWM_UL_Pin|PWM_VL_Pin|PWM_WL_Pin);
 
-    HAL_GPIO_DeInit(GPIOD, PWM_BKIN2_Pin|GPIO_PIN_2);
+    HAL_GPIO_DeInit(GPIOD, PWM_BKIN2_Pin|PWM_BKIN_Pin);
 
-    HAL_GPIO_DeInit(GPIOB, PWM_U_H_Pin|PWM_V_H_Pin|PWM_W_H_Pin);
+    HAL_GPIO_DeInit(GPIOB, PWM_UH_Pin|PWM_VH_Pin|PWM_WH_Pin);
 
     /* TIM8 DMA DeInit */
     HAL_DMA_DeInit(htim_base->hdma[TIM_DMA_ID_UPDATE]);
