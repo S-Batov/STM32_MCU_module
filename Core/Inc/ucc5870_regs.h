@@ -1,18 +1,7 @@
-//#############################################################################
-// FILE    : ucc5870_regs.h
-// TITLE   : Header file for ucc5870 Registers and bit field definitions
-// Version : 1.0
-//
-//  Group         : C2000
-//  Target Family : F2837x
-//  Created on    : 22 May 2020
-//  Author        : Ramesh Ramamoorthy
-//#############################################################################
-// $TI Release: C2000 FCL SFRA $
-// $Release Date: 11/2017 $
-// $Copyright: Copyright (C) 2013-2020 Texas Instruments Incorporated -
-//             http://www.ti.com/ ALL RIGHTS RESERVED $
-//#############################################################################
+/**
+ * @file UCC5870_regs.h
+ * @brief Header file for UCC5870 Registers and bit field definitions
+ */
 
 #ifndef _UCC5870_REGS_H
 #define _UCC5870_REGS_H
@@ -64,17 +53,17 @@
 //
 // UCC5870 CFG1 Register bit definitions:
 //
-struct UCC5870_CFG1_REG_BITS {                             // bit    description
-	uint16_t TDEAD :6; //  5:0    dead time
-	uint16_t NFLT2_DOUT_MUX :1; //  6	     nFLT2/DOUT pin function
-	uint16_t rsvd7 :1; //  7      PVDD ov flag
-	uint16_t OV1_DIS :1; //  8      VCC1 OVLO disable
-	uint16_t rsvd9 :1; //  9      PVDD ov flag
-	uint16_t GD_TWN_DIS :1; // 10	     OTW VCC1 side
-	uint16_t IO_DEGLITCH :2; // 12:11   IN deglitch time
-	uint16_t OVLO1_LEVEL :1; // 13      VCC1 OVLO setting
-	uint16_t UVLO1_LEVEL :1; // 14      VCC1 UVLO setting
-	uint16_t UV1_DIS :1; // 15      VCC1 UVLO disable
+struct UCC5870_CFG1_REG_BITS {  // bit     description
+	uint16_t TDEAD :6;          //  5:0    dead time
+	uint16_t NFLT2_DOUT_MUX :1; //  6	   nFLT2/DOUT pin function
+	uint16_t rsvd7 :1;          //  7      PVDD ov flag
+	uint16_t OV1_DIS :1;        //  8      VCC1 OVLO disable
+	uint16_t rsvd9 :1;          //  9      PVDD ov flag
+	uint16_t GD_TWN_DIS :1;     // 10	   OTW VCC1 side
+	uint16_t IO_DEGLITCH :2;    // 12:11   IN deglitch time
+	uint16_t OVLO1_LEVEL :1;    // 13      VCC1 OVLO setting
+	uint16_t UVLO1_LEVEL :1;    // 14      VCC1 UVLO setting
+	uint16_t UV1_DIS :1;        // 15      VCC1 UVLO disable
 };
 
 typedef union {
@@ -116,21 +105,21 @@ enum {
 //
 // UCC5870 CFG2 Register bit definitions:
 //
-struct UCC5870_CFG2_REG_BITS {                             // bit    description
-	uint16_t PWM_CHK_FAULT :1;  //  0      PWM check fault
+struct UCC5870_CFG2_REG_BITS {       // bit    description
+	uint16_t PWM_CHK_FAULT :1;       //  0      PWM check fault
 	uint16_t VREG1_ILIMIT_FAULT :1;  //  1      Vreg Ilimit fault
-	uint16_t GD_TWN_FAULT :1;  //  2      temp warning fault
-	uint16_t rsvd :2;  //  4-3
-	uint16_t BIST_FAULT :1;  //  5      Analog BIST fault
-	uint16_t TRIM_CRC_FAULT :1;  //  6      TRIM CRC fault
-	uint16_t INT_REG_FAULT :1;  //  7      Internal regulator fault
-	uint16_t CFG_CRC_FAULT :1;  //  8      CFG reg CRC fault
-	uint16_t SPI_FAULT :2;  // 10-9    SPI fault
-	uint16_t CLK_MON_FAULT :1;  // 11      Clock monitor fault
-	uint16_t STP_FAULT :1;  // 12      STP fault
-	uint16_t UVLO1_FAULT :1;  // 13      UVLO fault
-	uint16_t OVLO1_FAULT :1;  // 14      OVLO fault
-	uint16_t INT_COMM_FAULT :1;  // 15      Inter-die comm failure
+	uint16_t GD_TWN_FAULT :1;        //  2      temp warning fault
+	uint16_t rsvd :2;                //  4-3
+	uint16_t BIST_FAULT :1;          //  5      Analog BIST fault
+	uint16_t TRIM_CRC_FAULT :1;      //  6      TRIM CRC fault
+	uint16_t INT_REG_FAULT :1;       //  7      Internal regulator fault
+	uint16_t CFG_CRC_FAULT :1;       //  8      CFG reg CRC fault
+	uint16_t SPI_FAULT :2;           // 10-9    SPI fault
+	uint16_t CLK_MON_FAULT :1;       // 11      Clock monitor fault
+	uint16_t STP_FAULT :1;           // 12      STP fault
+	uint16_t UVLO1_FAULT :1;         // 13      UVLO fault
+	uint16_t OVLO1_FAULT :1;         // 14      OVLO fault
+	uint16_t INT_COMM_FAULT :1;      // 15      Inter-die comm failure
 };
 
 typedef union {
@@ -161,19 +150,19 @@ enum {
 //
 // UCC5870 CFG3 Register bit definitions:
 //
-struct UCC5870_CFG3_REG_BITS {                            // bit     description
-	uint16_t AI_IZTC_SEL :3; //  2:0
-	uint16_t FS_STATE_CFG_CRC_FAULT :1; //  3
-	uint16_t ITO2_EN :1; //  4
-	uint16_t ITO1_EN :1; //  5
+struct UCC5870_CFG3_REG_BITS {           // bit     description
+	uint16_t AI_IZTC_SEL :3;             //  2:0
+	uint16_t FS_STATE_CFG_CRC_FAULT :1;  //  3
+	uint16_t ITO2_EN :1;                 //  4
+	uint16_t ITO1_EN :1;                 //  5
 	uint16_t FS_STATE_INT_COMM_FAULT :1; //  6
-	uint16_t FS_STATE_INT_REG_FAULT :1; //  7
-	uint16_t FS_STATE_SPI_FAULT :2; //  9:8
-	uint16_t rsvd10 :1; // 10
-	uint16_t FS_STATE_STP_FAULT :2; // 12:11
-	uint16_t FS_STATE_PWM_CHK :1; // 13
-	uint16_t FS_STATE_OVLO1_FAULT :1; // 14
-	uint16_t FS_STATE_UVLO1_FAULT :1; // 15
+	uint16_t FS_STATE_INT_REG_FAULT :1;  //  7
+	uint16_t FS_STATE_SPI_FAULT :2;      //  9:8
+	uint16_t rsvd10 :1;                  // 10
+	uint16_t FS_STATE_STP_FAULT :2;      // 12:11
+	uint16_t FS_STATE_PWM_CHK :1;        // 13
+	uint16_t FS_STATE_OVLO1_FAULT :1;    // 14
+	uint16_t FS_STATE_UVLO1_FAULT :1;    // 15
 };
 
 typedef union {
@@ -217,21 +206,21 @@ enum {
 //
 // UCC5870 CFG4 Register bit definitions:
 //
-struct UCC5870_CFG4_REG_BITS {                            // bit     description
-	uint16_t UVOV3_EN :1; //  0
-	uint16_t PS_TSD_EN :1; //  1
-	uint16_t OCP_DIS :1; //  2
-	uint16_t SCP_DIS :1; //  3
-	uint16_t DESAT_EN :1; //  4
-	uint16_t VCECLP_EN :1; //  5
-	uint16_t MCLP_DIS :1; //  6
-	uint16_t GM_EN :1; //  7
-	uint16_t GM_BLK :2; //  9:8
-	uint16_t MCLP_CFG :1; // 10
-	uint16_t OV2_DIS :1; // 11
-	uint16_t DESAT_DEGLITCH :1; // 12
+struct UCC5870_CFG4_REG_BITS {   // bit     description
+	uint16_t UVOV3_EN :1;        //  0
+	uint16_t PS_TSD_EN :1;       //  1
+	uint16_t OCP_DIS :1;         //  2
+	uint16_t SCP_DIS :1;         //  3
+	uint16_t DESAT_EN :1;        //  4
+	uint16_t VCECLP_EN :1;       //  5
+	uint16_t MCLP_DIS :1;        //  6
+	uint16_t GM_EN :1;           //  7
+	uint16_t GM_BLK :2;          //  9:8
+	uint16_t MCLP_CFG :1;        // 10
+	uint16_t OV2_DIS :1;         // 11
+	uint16_t DESAT_DEGLITCH :1;  // 12
 	uint16_t PS_TSD_DEGLITCH :2; // 14:13
-	uint16_t UV2_DIS :1; // 15
+	uint16_t UV2_DIS :1;         // 15
 };
 
 typedef union {
@@ -303,14 +292,14 @@ enum {
 //
 // UCC5870 CFG5 Register bit definitions:
 //
-struct UCC5870_CFG5_REG_BITS {                            // bit     description
-	uint16_t PWM_MUTE_EN :1; //  0
-	uint16_t TLTOFF_STO_EN :3; //  3:1
-	uint16_t STO_CURR :2; //  5:4
-	uint16_t MCLPTH :2; //  7:6
-	uint16_t DESAT_DCHG_EN :1; //  8
+struct UCC5870_CFG5_REG_BITS {  // bit     description
+	uint16_t PWM_MUTE_EN :1;    //  0
+	uint16_t TLTOFF_STO_EN :3;  //  3:1
+	uint16_t STO_CURR :2;       //  5:4
+	uint16_t MCLPTH :2;         //  7:6
+	uint16_t DESAT_DCHG_EN :1;  //  8
 	uint16_t DESAT_CHG_CURR :2; // 10:9
-	uint16_t DESATTH :4; // 14:11
+	uint16_t DESATTH :4;        // 14:11
 	uint16_t GM_STO2LTO_DIS :1; // 15
 };
 
@@ -387,13 +376,13 @@ enum {
 //
 // UCC5870 CFG6 Register bit definitions:
 //
-struct UCC5870_CFG6_REG_BITS {                            // bit     description
-	uint16_t PS_TSDTH :3;     //  2:0
+struct UCC5870_CFG6_REG_BITS { // bit     description
+	uint16_t PS_TSDTH :3;      //  2:0
 	uint16_t TEMP_CURR :2;     //  4:3
-	uint16_t OC_BLK :3;     //  7:5
-	uint16_t SC_BLK :2;     //  9:8
-	uint16_t SCTH :2;     // 11:10
-	uint16_t OCTH :4;     // 15:12
+	uint16_t OC_BLK :3;        //  7:5
+	uint16_t SC_BLK :2;        //  9:8
+	uint16_t SCTH :2;          // 11:10
+	uint16_t OCTH :4;          // 15:12
 };
 
 typedef union {
@@ -465,16 +454,16 @@ enum {
 //
 // UCC5870 CFG7 Register bit definitions:
 //
-struct UCC5870_CFG7_REG_BITS {                            // bit     description
+struct UCC5870_CFG7_REG_BITS {      // bit     description
 	uint16_t FS_STATE_ADC_FAULT :2; // 1:0
-	uint16_t ADC_FAULT_P :1; //  2
-	uint16_t ADC_SAMP_DLY :2; //  4:3
-	uint16_t ADC_SAMP_MODE :2; //  6:5
-	uint16_t ADC_EN :1; //  7
-	uint16_t OVLO3TH :2; //  9:8
-	uint16_t UVLO3TH :2; // 11:10
-	uint16_t OVLO2TH :2; // 13:12
-	uint16_t UVLO2TH :2; // 15:14
+	uint16_t ADC_FAULT_P :1;        //  2
+	uint16_t ADC_SAMP_DLY :2;       //  4:3
+	uint16_t ADC_SAMP_MODE :2;      //  6:5
+	uint16_t ADC_EN :1;             //  7
+	uint16_t OVLO3TH :2;            //  9:8
+	uint16_t UVLO3TH :2;            // 11:10
+	uint16_t OVLO2TH :2;            // 13:12
+	uint16_t UVLO2TH :2;            // 15:14
 };
 
 typedef union {
@@ -544,13 +533,13 @@ enum {
 //
 // UCC5870 CFG8 Register bit definitions:
 //
-struct UCC5870_CFG8_REG_BITS {                            // bit     description
-	uint16_t IOUT_SEL :3;    //  2:0
-	uint16_t AI_ASC_MUX :1;    //  3
-	uint16_t VREF_SEL :1;    //  4
-	uint16_t GD_2LOFF_STO_EN :1;    //  5
-	uint16_t CRC_DIS :1;    //  6
-	uint16_t rsvd7 :1;    //  7
+struct UCC5870_CFG8_REG_BITS {    // bit     description
+	uint16_t IOUT_SEL :3;         //  2:0
+	uint16_t AI_ASC_MUX :1;       //  3
+	uint16_t VREF_SEL :1;         //  4
+	uint16_t GD_2LOFF_STO_EN :1;  //  5
+	uint16_t CRC_DIS :1;          //  6
+	uint16_t rsvd7 :1;            //  7
 	uint16_t GD_2LOFF_CURR :2;    //  9:8
 	uint16_t GD_2LOFF_TIME :3;    // 12:10
 	uint16_t GD_2LOFF_VOLT :3;    // 15:13
@@ -617,22 +606,22 @@ enum {
 //
 // UCC5870 CFG9 Register bit definitions:
 //
-struct UCC5870_CFG9_REG_BITS {                            // bit     description
-	uint16_t CLK_MON_SEC_FAULT :1;  //  0
+struct UCC5870_CFG9_REG_BITS {       // bit     description
+	uint16_t CLK_MON_SEC_FAULT :1;   //  0
 	uint16_t VREG2_ILIMIT_FAULT :1;  //  1
-	uint16_t BIST_SEC_FAULT :1;  //  2
-	uint16_t INT_REG_SEC_FAULT :1;  //  3
+	uint16_t BIST_SEC_FAULT :1;      //  2
+	uint16_t INT_REG_SEC_FAULT :1;   //  3
 	uint16_t TRIM_CRC_SEC_FAULT :1;  //  4
-	uint16_t CFG_CRC_SEC_FAULT :1;  //  5
+	uint16_t CFG_CRC_SEC_FAULT :1;   //  5
 	uint16_t INT_COMM_SEC_FAULT :1;  //  6
-	uint16_t GD_TSD_FAULT :1;  //  7
-	uint16_t PS_TSD_FAULT :1;  //  8
-	uint16_t OVLO23_FAULT :1;  //  9
-	uint16_t UVLO23_FAULT :1;  // 10
-	uint16_t GM_FAULT :2;  // 12:11
-	uint16_t OC_FAULT :1;  // 13
-	uint16_t SC_FAULT :1;  // 14
-	uint16_t SPARE :1;  // 15
+	uint16_t GD_TSD_FAULT :1;        //  7
+	uint16_t PS_TSD_FAULT :1;        //  8
+	uint16_t OVLO23_FAULT :1;        //  9
+	uint16_t UVLO23_FAULT :1;        // 10
+	uint16_t GM_FAULT :2;            // 12:11
+	uint16_t OC_FAULT :1;            // 13
+	uint16_t SC_FAULT :1;            // 14
+	uint16_t SPARE :1;               // 15
 };
 
 typedef union {
@@ -656,17 +645,17 @@ enum {
 //
 // UCC5870 CFG10 Register bit definitions:
 //
-struct UCC5870_CFG10_REG_BITS {                           // bit     description
-	uint16_t FS_STATE_INT_COMM_SEC :2; //  1:0
-	uint16_t FS_STATE_GM :2; //  3:2
-	uint16_t FS_STATE_GD_TSD :2; //  5:4
-	uint16_t FS_STATE_PS_TSD :2; //  7:6
-	uint16_t FS_STATE_OCP :2; //  9:8
-	uint16_t rsvd10 :1; // 10
+struct UCC5870_CFG10_REG_BITS {         // bit     description
+	uint16_t FS_STATE_INT_COMM_SEC :2;  //  1:0
+	uint16_t FS_STATE_GM :2;            //  3:2
+	uint16_t FS_STATE_GD_TSD :2;        //  5:4
+	uint16_t FS_STATE_PS_TSD :2;        //  7:6
+	uint16_t FS_STATE_OCP :2;           //  9:8
+	uint16_t rsvd10 :1;                 // 10
 	uint16_t FS_STATE_INT_REG_FAULT :1; // 11
-	uint16_t FS_STATE_DESAT_SCP :2; // 13:12
-	uint16_t SPARE :1; // 14
-	uint16_t GD_TWN_SEC_EN :1; // 15
+	uint16_t FS_STATE_DESAT_SCP :2;     // 13:12
+	uint16_t SPARE :1;                  // 14
+	uint16_t GD_TWN_SEC_EN :1;          // 15
 };
 
 typedef union {
@@ -687,15 +676,15 @@ enum {
 //
 // UCC5870 CFG11 Register bit definitions:
 //
-struct UCC5870_CFG11_REG_BITS {                           // bit     description
-	uint16_t FS_STATE_CLK_MON_SEC_FAULT :2;  //  1:0
-	uint16_t VCE_CLMP_HLD_TIME :2;  //  3:2
-	uint16_t FS_STATE_CFG_CRC_SEC_FAULT :2;  //  5:4
+struct UCC5870_CFG11_REG_BITS {               // bit     description
+	uint16_t FS_STATE_CLK_MON_SEC_FAULT :2;   //  1:0
+	uint16_t VCE_CLMP_HLD_TIME :2;            //  3:2
+	uint16_t FS_STATE_CFG_CRC_SEC_FAULT :2;   //  5:4
 	uint16_t FS_STATE_TRIM_CRC_SEC_FAULT :2;  //  7:6
-	uint16_t FS_STATE_OVLO3 :2;  //  9:8
-	uint16_t FS_STATE_UVLO3 :2;  // 11:10
-	uint16_t FS_STATE_OVLO2 :2;  // 13:12
-	uint16_t FS_STATE_UVLO2 :2;  // 15:14
+	uint16_t FS_STATE_OVLO3 :2;               //  9:8
+	uint16_t FS_STATE_UVLO3 :2;               // 11:10
+	uint16_t FS_STATE_OVLO2 :2;               // 13:12
+	uint16_t FS_STATE_UVLO2 :2;               // 15:14
 };
 
 typedef union {
@@ -715,9 +704,9 @@ enum {
 //
 // UCC5870 ADCDATA1 Register bit definitions:
 //
-struct UCC5870_ADCDATA1_REG_BITS {                        // bit     description
-	uint16_t DATA_AI1 :10;    //  9-0
-	uint16_t TIME_STAMP :6;    // 15-10
+struct UCC5870_ADCDATA1_REG_BITS { // bit     description
+	uint16_t DATA_AI1 :10;         //  9-0
+	uint16_t TIME_STAMP :6;        // 15-10
 };
 
 typedef union {
@@ -730,9 +719,9 @@ typedef union {
 //
 // UCC5870 ADCDATA2 Register bit definitions:
 //
-struct UCC5870_ADCDATA2_REG_BITS {                        // bit     description
-	uint16_t DATA_AI3 :10;    //  9-0
-	uint16_t TIME_STAMP :6;    // 15-10
+struct UCC5870_ADCDATA2_REG_BITS { // bit     description
+	uint16_t DATA_AI3 :10;         //  9-0
+	uint16_t TIME_STAMP :6;        // 15-10
 };
 
 typedef union {
@@ -745,9 +734,9 @@ typedef union {
 //
 // UCC5870 ADCDATA3 Register bit definitions:
 //
-struct UCC5870_ADCDATA3_REG_BITS {                        // bit     description
-	uint16_t DATA_AI5 :10;    //  9-0
-	uint16_t TIME_STAMP :6;    // 15-10
+struct UCC5870_ADCDATA3_REG_BITS { // bit     description
+	uint16_t DATA_AI5 :10;         //  9-0
+	uint16_t TIME_STAMP :6;        // 15-10
 };
 
 typedef union {
@@ -760,9 +749,9 @@ typedef union {
 //
 // UCC5870 ADCDATA4 Register bit definitions:
 //
-struct UCC5870_ADCDATA4_REG_BITS {                        // bit     description
-	uint16_t DATA_AI2 :10;    //  9-0
-	uint16_t TIME_STAMP :6;    // 15-10
+struct UCC5870_ADCDATA4_REG_BITS { // bit     description
+	uint16_t DATA_AI2 :10;         //  9-0
+	uint16_t TIME_STAMP :6;        // 15-10
 };
 
 typedef union {
@@ -775,9 +764,9 @@ typedef union {
 //
 // UCC5870 ADCDATA5 Register bit definitions:
 //
-struct UCC5870_ADCDATA5_REG_BITS {                        // bit     description
-	uint16_t DATA_AI4 :10;    //  9-0
-	uint16_t TIME_STAMP :6;    // 15-10
+struct UCC5870_ADCDATA5_REG_BITS { // bit     description
+	uint16_t DATA_AI4 :10;         //  9-0
+	uint16_t TIME_STAMP :6;        // 15-10
 };
 
 typedef union {
@@ -790,9 +779,9 @@ typedef union {
 //
 // UCC5870 ADCDATA6 Register bit definitions:
 //
-struct UCC5870_ADCDATA6_REG_BITS {                        // bit     description
-	uint16_t DATA_AI6 :10;    //  9-0
-	uint16_t TIME_STAMP :6;    // 15-10
+struct UCC5870_ADCDATA6_REG_BITS { // bit     description
+	uint16_t DATA_AI6 :10;         //  9-0
+	uint16_t TIME_STAMP :6;        // 15-10
 };
 
 typedef union {
@@ -805,9 +794,9 @@ typedef union {
 //
 // UCC5870 ADCDATA7 Register bit definitions:
 //
-struct UCC5870_ADCDATA7_REG_BITS {                        // bit     description
-	uint16_t DATA_DTEMP :10;    //  9-0
-	uint16_t TIME_STAMP :6;    // 15-10
+struct UCC5870_ADCDATA7_REG_BITS { // bit     description
+	uint16_t DATA_DTEMP :10;       //  9-0
+	uint16_t TIME_STAMP :6;        // 15-10
 };
 
 typedef union {
@@ -820,9 +809,9 @@ typedef union {
 //
 // UCC5870 ADCDATA8 Register bit definitions:
 //
-struct UCC5870_ADCDATA8_REG_BITS {                        // bit     description
-	uint16_t DATA_OUTH :10;    //  9-0
-	uint16_t TIME_STAMP :6;    // 15-10
+struct UCC5870_ADCDATA8_REG_BITS { // bit     description
+	uint16_t DATA_OUTH :10;        //  9-0
+	uint16_t TIME_STAMP :6;        // 15-10
 };
 
 typedef union {
@@ -835,9 +824,9 @@ typedef union {
 //
 // UCC5870 CRCDATA Register bit definitions:
 //
-struct UCC5870_CRCDATA_REG_BITS {                         // bit     description
-	uint16_t CRC_RX :8;     //  7-0
-	uint16_t CRC_TX :8;     // 15-8
+struct UCC5870_CRCDATA_REG_BITS { // bit     description
+	uint16_t CRC_RX :8;           //  7-0
+	uint16_t CRC_TX :8;           // 15-8
 };
 
 typedef union {
@@ -850,8 +839,8 @@ typedef union {
 //
 // UCC5870 SPITEST Register bit definitions:
 //
-struct UCC5870_SPITEST_REG_BITS {                         // bit     description
-	uint16_t rsvd :16;       // 15-10
+struct UCC5870_SPITEST_REG_BITS { // bit     description
+	uint16_t rsvd :16;            // 15-10
 };
 
 typedef union {
@@ -864,9 +853,9 @@ typedef union {
 //
 // UCC5870 GD_ADDR Register bit definitions:
 //
-struct UCC5870_GD_ADDR_REG_BITS {                         // bit     description
-	uint16_t GD_ADDRESS :4;     //  3-0
-	uint16_t rsvd :12;     // 15-4
+struct UCC5870_GD_ADDR_REG_BITS { // bit     description
+	uint16_t GD_ADDRESS :4;       //  3-0
+	uint16_t rsvd :12;            // 15-4
 };
 
 typedef union {
@@ -879,17 +868,17 @@ typedef union {
 //
 // UCC5870 STATUS1 Register bit definitions:
 //
-typedef struct UCC5870_STATUS1_REG_BITS {                         // bit     description
-	uint16_t rsvd0 :1;   //  0
-	uint16_t GD_TWN_FAULT :1;   //  1
-	uint16_t rsvd2 :3;   //  4:2
-	uint16_t PWM_COMP_CHK_FAULT :1;   //  5
-	uint16_t OPM :3;   //  8:6
-	uint16_t rsvd9 :2;   // 10:9
-	uint16_t EN_STATE :1;   // 11
-	uint16_t rsvd12 :2;   // 13:12
-	uint16_t INN_STATE :1;   // 14
-	uint16_t INP_STATE :1;   // 15
+typedef struct UCC5870_STATUS1_REG_BITS { // bit     description
+	uint16_t rsvd0 :1;                    //  0
+	uint16_t GD_TWN_FAULT :1;             //  1
+	uint16_t rsvd2 :3;                    //  4:2
+	uint16_t PWM_COMP_CHK_FAULT :1;       //  5
+	uint16_t OPM :3;                      //  8:6
+	uint16_t rsvd9 :2;                    // 10:9
+	uint16_t EN_STATE :1;                 // 11
+	uint16_t rsvd12 :2;                   // 13:12
+	uint16_t INN_STATE :1;                // 14
+	uint16_t INP_STATE :1;                // 15
 } UCC5870_STATUS1_REG_BITS;
 
 typedef union {
@@ -927,23 +916,23 @@ enum {
 //
 // UCC5870 STATUS2 Register bit definitions:
 //
-typedef struct UCC5870_STATUS2_REG_BITS {                         // bit     description
-	uint16_t OR_NFLT2_PRI :1;   //  0
-	uint16_t OR_NFLT1_PRI :1;   //  1
-	uint16_t DRV_EN_RCVD :1;   //  2
-	uint16_t TRIM_CRC_FAULT :1;   //  3
-	uint16_t CFG_CRC_FAULT :1;   //  4
-	uint16_t CLK_MON_FAULT :1;   //  5
-	uint16_t BIST_FAULT :1;   //  6
-	uint16_t INT_COMM_FAULT :1;   //  7
-	uint16_t INT_REG_FAULT :1;   //  8
-	uint16_t SPI_FAULT :1;   //  9
-	uint16_t rsvd10 :1;   // 10
-	uint16_t STP_FAULT :1;   // 11
-	uint16_t OVLO1_FAULT :1;   // 12
-	uint16_t UVLO1_FAULT :1;   // 13
-	uint16_t PRI_RDY :1;   // 14
-	uint16_t rsvd15 :1;   // 15
+typedef struct UCC5870_STATUS2_REG_BITS { // bit     description
+	uint16_t OR_NFLT2_PRI :1;             //  0
+	uint16_t OR_NFLT1_PRI :1;             //  1
+	uint16_t DRV_EN_RCVD :1;              //  2
+	uint16_t TRIM_CRC_FAULT :1;           //  3
+	uint16_t CFG_CRC_FAULT :1;            //  4
+	uint16_t CLK_MON_FAULT :1;            //  5
+	uint16_t BIST_FAULT :1;               //  6
+	uint16_t INT_COMM_FAULT :1;           //  7
+	uint16_t INT_REG_FAULT :1;            //  8
+	uint16_t SPI_FAULT :1;                //  9
+	uint16_t rsvd10 :1;                   // 10
+	uint16_t STP_FAULT :1;                // 11
+	uint16_t OVLO1_FAULT :1;              // 12
+	uint16_t UVLO1_FAULT :1;              // 13
+	uint16_t PRI_RDY :1;                  // 14
+	uint16_t rsvd15 :1;                   // 15
 } UCC5870_STATUS2_REG_BITS;
 
 typedef union {
@@ -980,23 +969,23 @@ enum {
 //
 // UCC5870 STATUS3 Register bit definitions:
 //
-typedef struct UCC5870_STATUS3_REG_BITS {                         // bit     description
-	uint16_t DESAT_FAULT :1;  //  0
-	uint16_t OC_FAULT :1;  //  1
-	uint16_t SC_FAULT :1;  //  2
-	uint16_t VREG2_ILIMIT_FAULT :1;  //  3
-	uint16_t rsvd4 :1;  //  4
-	uint16_t PS_TSD_FAULT :1;  //  5
-	uint16_t VCEOV_FAULT :1;  //  6
-	uint16_t UVLO2_FAULT :1;  //  7
-	uint16_t OVLO2_FAULT :1;  //  8
-	uint16_t UVLO3_FAULT :1;  //  9
-	uint16_t OVLO3_FAULT :1;  // 10
-	uint16_t MCLP_STATE :1;  // 11
-	uint16_t INT_COMM_SEC_FAULT :1;  // 12
-	uint16_t INT_REG_SEC_FAULT :1;  // 13
-	uint16_t GM_FAULT :1;  // 14
-	uint16_t GM_STATE :1;  // 15
+typedef struct UCC5870_STATUS3_REG_BITS { // bit     description
+	uint16_t DESAT_FAULT :1;              //  0
+	uint16_t OC_FAULT :1;                 //  1
+	uint16_t SC_FAULT :1;                 //  2
+	uint16_t VREG2_ILIMIT_FAULT :1;       //  3
+	uint16_t rsvd4 :1;                    //  4
+	uint16_t PS_TSD_FAULT :1;             //  5
+	uint16_t VCEOV_FAULT :1;              //  6
+	uint16_t UVLO2_FAULT :1;              //  7
+	uint16_t OVLO2_FAULT :1;              //  8
+	uint16_t UVLO3_FAULT :1;              //  9
+	uint16_t OVLO3_FAULT :1;              // 10
+	uint16_t MCLP_STATE :1;               // 11
+	uint16_t INT_COMM_SEC_FAULT :1;       // 12
+	uint16_t INT_REG_SEC_FAULT :1;        // 13
+	uint16_t GM_FAULT :1;                 // 14
+	uint16_t GM_STATE :1;                 // 15
 } UCC5870_STATUS3_REG_BITS;
 
 typedef union {
@@ -1031,20 +1020,20 @@ enum {
 //
 // UCC5870 STATUS4 Register bit definitions:
 //
-typedef struct UCC5870_STATUS4_REG_BITS {                         // bit     description
-	uint16_t SEC_RDY :1;  //  0
-	uint16_t rsvd :4;  //  4:1
-	uint16_t RIM_CRC_SEC_FAULT :1;  //  5
-	uint16_t CFG_CRC_SEC_FAULT :1;  //  6
-	uint16_t CLK_MON_SEC_FAULT :1;  //  7
-	uint16_t BIST_SEC_FAULT :1;  //  8
-	uint16_t OR_NFLT2_SEC :1;  //  9
-	uint16_t OR_NFLT1_SEC :1;  // 10
-	uint16_t rsvd11 :1;  // 11
-	uint16_t GD_TSD_SEC_FAULT :1;  // 12
-	uint16_t GD_TWN_SEC_FAULT :1;  // 13
-	uint16_t VCE_STATE :1;  // 14
-	uint16_t rsvd15 :1;  // 15
+typedef struct UCC5870_STATUS4_REG_BITS { // bit     description
+	uint16_t SEC_RDY :1;                  //  0
+	uint16_t rsvd :4;                     //  4:1
+	uint16_t RIM_CRC_SEC_FAULT :1;        //  5
+	uint16_t CFG_CRC_SEC_FAULT :1;        //  6
+	uint16_t CLK_MON_SEC_FAULT :1;        //  7
+	uint16_t BIST_SEC_FAULT :1;           //  8
+	uint16_t OR_NFLT2_SEC :1;             //  9
+	uint16_t OR_NFLT1_SEC :1;             // 10
+	uint16_t rsvd11 :1;                   // 11
+	uint16_t GD_TSD_SEC_FAULT :1;         // 12
+	uint16_t GD_TWN_SEC_FAULT :1;         // 13
+	uint16_t VCE_STATE :1;                // 14
+	uint16_t rsvd15 :1;                   // 15
 } UCC5870_STATUS4_REG_BITS;
 
 typedef union {
@@ -1069,9 +1058,9 @@ typedef union {
 //
 // UCC5870 STATUS5 Register bit definitions:
 //
-typedef struct UCC5870_STATUS5_REG_BITS {                         // bit     description
-	uint16_t rsvd :15;     // 14-0
-	uint16_t ADC_FAULT :1;     // 15
+typedef struct UCC5870_STATUS5_REG_BITS { // bit     description
+	uint16_t rsvd :15;                    // 14-0
+	uint16_t ADC_FAULT :1;                // 15
 } UCC5870_STATUS5_REG_BITS;
 
 typedef union {
@@ -1089,15 +1078,15 @@ typedef union {
 //
 // UCC5870 CONTROL1 Register bit definitions:
 //
-struct UCC5870_CONTROL1_REG_BITS {                        // bit     description
-	uint16_t CLK_MON_CHK_PRI :1; //  0
-	uint16_t rsvd4 :4; //  4:1
-	uint16_t STP_CHK :1; //  5
-	uint16_t rsvd6 :1; //  6
-	uint16_t PWM_COMP_CHK :1; //  7
-	uint16_t CFG_CRC_CHK_PRI :1; //  8
-	uint16_t rsvd14 :6; // 14-9
-	uint16_t CLR_SPI_CRC :1; // 15
+struct UCC5870_CONTROL1_REG_BITS { // bit     description
+	uint16_t CLK_MON_CHK_PRI :1;   //  0
+	uint16_t rsvd4 :4;             //  4:1
+	uint16_t STP_CHK :1;           //  5
+	uint16_t rsvd6 :1;             //  6
+	uint16_t PWM_COMP_CHK :1;      //  7
+	uint16_t CFG_CRC_CHK_PRI :1;   //  8
+	uint16_t rsvd14 :6;            // 14-9
+	uint16_t CLR_SPI_CRC :1;       // 15
 };
 
 typedef union {
@@ -1110,23 +1099,23 @@ typedef union {
 //
 // UCC5870 CONTROL2 Register bit definitions:
 //
-struct UCC5870_CONTROL2_REG_BITS {                        // bit     description
-	uint16_t rsvd0 :1;  //  0
-	uint16_t PS_TSD_CHK_SEC :1;  //  1
-	uint16_t CFG_CRC_CHK_SEC :1;  //  2
-	uint16_t CLK_MON_CHK_SEC :1;  //  3
-	uint16_t RESERVED4 :1;  //  4
-	uint16_t VGTH_MEAS :1;  //  5
-	uint16_t rsvd6 :1;  //  6
-	uint16_t OCP_CHK :1;  //  7
-	uint16_t SCP_CHK :1;  //  8
-	uint16_t DESAT_CHK :1;  //  9
-	uint16_t rsvd10 :1;  // 10
-	uint16_t VCECLP_CHK :1;  // 11
-	uint16_t GATE_ON_CHK :1;  // 12
-	uint16_t GATE_OFF_CHK :1;  // 13
-	uint16_t rsvd14 :1;  // 14
-	uint16_t CLR_STAT_REG :1;  // 15
+struct UCC5870_CONTROL2_REG_BITS { // bit     description
+	uint16_t rsvd0 :1;             //  0
+	uint16_t PS_TSD_CHK_SEC :1;    //  1
+	uint16_t CFG_CRC_CHK_SEC :1;   //  2
+	uint16_t CLK_MON_CHK_SEC :1;   //  3
+	uint16_t RESERVED4 :1;         //  4
+	uint16_t VGTH_MEAS :1;         //  5
+	uint16_t rsvd6 :1;             //  6
+	uint16_t OCP_CHK :1;           //  7
+	uint16_t SCP_CHK :1;           //  8
+	uint16_t DESAT_CHK :1;         //  9
+	uint16_t rsvd10 :1;            // 10
+	uint16_t VCECLP_CHK :1;        // 11
+	uint16_t GATE_ON_CHK :1;       // 12
+	uint16_t GATE_OFF_CHK :1;      // 13
+	uint16_t rsvd14 :1;            // 14
+	uint16_t CLR_STAT_REG :1;      // 15
 };
 
 typedef union {
@@ -1139,16 +1128,16 @@ typedef union {
 //
 // UCC5870 ADCCFG Register bit definitions:
 //
-struct UCC5870_ADCCFG_REG_BITS {                          // bit     description
-	uint16_t rsvd0 :1;   //  0
-	uint16_t ADC_ON_CH_SEL_7 :1;   //  1
-	uint16_t ADC_ON_CH_SEL_6 :1;   //  2
-	uint16_t ADC_ON_CH_SEL_5 :1;   //  3
-	uint16_t ADC_ON_CH_SEL_4 :1;   //  4
-	uint16_t ADC_ON_CH_SEL_3 :1;   //  5
-	uint16_t ADC_ON_CH_SEL_2 :1;   //  6
-	uint16_t ADC_ON_CH_SEL_1 :1;   //  7
-	uint16_t rsvd7 :1;   //  8
+struct UCC5870_ADCCFG_REG_BITS {    // bit     description
+	uint16_t rsvd0 :1;              //  0
+	uint16_t ADC_ON_CH_SEL_7 :1;    //  1
+	uint16_t ADC_ON_CH_SEL_6 :1;    //  2
+	uint16_t ADC_ON_CH_SEL_5 :1;    //  3
+	uint16_t ADC_ON_CH_SEL_4 :1;    //  4
+	uint16_t ADC_ON_CH_SEL_3 :1;    //  5
+	uint16_t ADC_ON_CH_SEL_2 :1;    //  6
+	uint16_t ADC_ON_CH_SEL_1 :1;    //  7
+	uint16_t rsvd7 :1;              //  8
 	uint16_t ADC_OFF_CH_SEL_7 :1;   //  9
 	uint16_t ADC_OFF_CH_SEL_6 :1;   // 10
 	uint16_t ADC_OFF_CH_SEL_5 :1;   // 11
@@ -1172,22 +1161,22 @@ enum {
 //
 // UCC5870 DOUTCFG Register bit definitions:
 //
-struct UCC5870_DOUTCFG_REG_BITS {                         // bit     description
-	uint16_t DOUT_TO_AI1 :1;  //  0
-	uint16_t DOUT_TO_AI3 :1;  //  1
-	uint16_t DOUT_TO_AI5 :1;  //  2
-	uint16_t DOUT_TO_AI2 :1;  //  3
-	uint16_t DOUT_TO_AI4 :1;  //  4
-	uint16_t DOUT_TO_AI6 :1;  //  5
-	uint16_t DOUT_TO_TJ :1;  //  6
-	uint16_t rsvd :1;  //  7
-	uint16_t FREQ_DOUT :2;  //  9:8
-	uint16_t AI6OCSC_EN :1;  // 10
-	uint16_t AI4OCSC_EN :1;  // 11
-	uint16_t AI2OCSC_EN :1;  // 12
-	uint16_t AI5OT_EN :1;  // 13
-	uint16_t AI3OT_EN :1;  // 14
-	uint16_t AI1OT_EN :1;  // 15
+struct UCC5870_DOUTCFG_REG_BITS { // bit     description
+	uint16_t DOUT_TO_AI1 :1;      //  0
+	uint16_t DOUT_TO_AI3 :1;      //  1
+	uint16_t DOUT_TO_AI5 :1;      //  2
+	uint16_t DOUT_TO_AI2 :1;      //  3
+	uint16_t DOUT_TO_AI4 :1;      //  4
+	uint16_t DOUT_TO_AI6 :1;      //  5
+	uint16_t DOUT_TO_TJ :1;       //  6
+	uint16_t rsvd :1;             //  7
+	uint16_t FREQ_DOUT :2;        //  9:8
+	uint16_t AI6OCSC_EN :1;       // 10
+	uint16_t AI4OCSC_EN :1;       // 11
+	uint16_t AI2OCSC_EN :1;       // 12
+	uint16_t AI5OT_EN :1;         // 13
+	uint16_t AI3OT_EN :1;         // 14
+	uint16_t AI1OT_EN :1;         // 15
 };
 
 typedef union {
@@ -1217,17 +1206,17 @@ enum {
 //TODO:
 
 typedef struct {
-	UCC5870_CFG1_REG cfg1;         // 0x00
-	UCC5870_CFG2_REG cfg2;         // 0x01
-	UCC5870_CFG3_REG cfg3;         // 0x02
-	UCC5870_CFG4_REG cfg4;         // 0x03
-	UCC5870_CFG5_REG cfg5;         // 0x04
-	UCC5870_CFG6_REG cfg6;         // 0x05
-	UCC5870_CFG7_REG cfg7;         // 0x06
-	UCC5870_CFG8_REG cfg8;         // 0x07
-	UCC5870_CFG9_REG cfg9;         // 0x08
-	UCC5870_CFG10_REG cfg10;        // 0x09
-	UCC5870_CFG11_REG cfg11;        // 0x0a
+	UCC5870_CFG1_REG cfg1;             // 0x00
+	UCC5870_CFG2_REG cfg2;             // 0x01
+	UCC5870_CFG3_REG cfg3;             // 0x02
+	UCC5870_CFG4_REG cfg4;             // 0x03
+	UCC5870_CFG5_REG cfg5;             // 0x04
+	UCC5870_CFG6_REG cfg6;             // 0x05
+	UCC5870_CFG7_REG cfg7;             // 0x06
+	UCC5870_CFG8_REG cfg8;             // 0x07
+	UCC5870_CFG9_REG cfg9;             // 0x08
+	UCC5870_CFG10_REG cfg10;           // 0x09
+	UCC5870_CFG11_REG cfg11;           // 0x0a
 	UCC5870_ADCDATA1_REG adcdata1;     // 0x0b
 	UCC5870_ADCDATA2_REG adcdata2;     // 0x0c
 	UCC5870_ADCDATA3_REG adcdata3;     // 0x0d
@@ -1236,18 +1225,18 @@ typedef struct {
 	UCC5870_ADCDATA6_REG adcdata6;     // 0x10
 	UCC5870_ADCDATA7_REG adcdata7;     // 0x11
 	UCC5870_ADCDATA8_REG adcdata8;     // 0x12
-	UCC5870_CRCDATA_REG crcdata;      // 0x13
-	UCC5870_SPITEST_REG spitest;      // 0x14
-	UCC5870_GD_ADDR_REG gd_address;   // 0x15
-	UCC5870_STATUS1_REG status1;      // 0x16
-	UCC5870_STATUS2_REG status2;      // 0x17
-	UCC5870_STATUS3_REG status3;      // 0x18
-	UCC5870_STATUS4_REG status4;      // 0x19
-	UCC5870_STATUS5_REG status5;      // 0x1a
+	UCC5870_CRCDATA_REG crcdata;       // 0x13
+	UCC5870_SPITEST_REG spitest;       // 0x14
+	UCC5870_GD_ADDR_REG gd_address;    // 0x15
+	UCC5870_STATUS1_REG status1;       // 0x16
+	UCC5870_STATUS2_REG status2;       // 0x17
+	UCC5870_STATUS3_REG status3;       // 0x18
+	UCC5870_STATUS4_REG status4;       // 0x19
+	UCC5870_STATUS5_REG status5;       // 0x1a
 	UCC5870_CONTROL1_REG control1;     // 0x1b
 	UCC5870_CONTROL2_REG control2;     // 0x1c
-	UCC5870_ADCCFG_REG adccfg;       // 0x1d
-	UCC5870_DOUTCFG_REG doutcfg;      // 0x1e
+	UCC5870_ADCCFG_REG adccfg;         // 0x1d
+	UCC5870_DOUTCFG_REG doutcfg;       // 0x1e
 } UCC5870_Vars;
 
 #define UCC5870_DEFAULTS            \

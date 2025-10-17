@@ -17,24 +17,6 @@
   ******************************************************************************
   */
 
-
-/**
- * @brief [Short one-line description of what the function does]
- *
- * [Optional longer description of the function.
- * You can explain algorithm details, assumptions, or usage notes here.]
- *
- * @param[in]  param1   [Description of first parameter]
- * @param[out] param2   [Description of second parameter, if it is modified]
- * @param[in,out] param3 [Description if parameter is both input and output]
- *
- * @return HAL status (HAL_OK, HAL_ERROR, etc.)
- *
- * @note [Optional: add notes about side effects or usage requirements]
- * @warning [Optional: add warnings about incorrect use]
- */
-
-
 /* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
