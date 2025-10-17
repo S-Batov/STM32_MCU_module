@@ -144,24 +144,25 @@ int main(void)
 
   UART_Transmit((uint8_t *)"Setup start\r\n", strlen("Setup start\r\n"), HAL_MAX_DELAY);
 
-  //initialize local UCC5870 regs
+  /* --- Initialize local UCC5870 registers ------------------------------------*/
   Init_UCC5870_Regs();
 
-  //initialize UCC5870
+  /* --- Initialize UCC5870 registers via SPI ----------------------------------*/
   Init_UCC5870();
 
-  //start PWM timer DMA
+  /* --- Set up PWM_timer DMA channels -----------------------------------------*/
   if(PWM_timer_DMA_start() != HAL_OK)
   {
 	    Error_Handler();
   }
 
-  //start PWM timer
+  /* --- Start PWM_timer and PWM generation on MCU pins ------------------------*/
   if(PWM_timer_start() != HAL_OK)
   {
 	    Error_Handler();
   }
 
+  /* --- Print values of STATUS registers of all gate drivers ------------------*/
   printInverterStatus();
 
   UART_Transmit((uint8_t *)"\n\nSetup end\r\n", strlen("\n\nSetup end\r\n"), HAL_MAX_DELAY);
