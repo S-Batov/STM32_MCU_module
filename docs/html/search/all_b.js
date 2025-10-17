@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['main_0',['main',['../main_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'main.c']]],
+  ['main_2ec_1',['main.c',['../main_8c.html',1,'']]],
+  ['main_2eh_2',['main.h',['../main_8h.html',1,'']]],
+  ['mclp_5fcfg_3',['MCLP_CFG',['../struct_u_c_c5870___c_f_g4___r_e_g___b_i_t_s.html#a7ef5f6b7aa39af87d0f912c420a91c49',1,'UCC5870_CFG4_REG_BITS']]],
+  ['mclp_5fdis_4',['MCLP_DIS',['../struct_u_c_c5870___c_f_g4___r_e_g___b_i_t_s.html#aa57f4b04ac0f848c48d9c132be261cc8',1,'UCC5870_CFG4_REG_BITS']]],
+  ['mclp_5fstate_5',['MCLP_STATE',['../struct_u_c_c5870___s_t_a_t_u_s3___r_e_g___b_i_t_s.html#a3141a2edbd09f2fcf37dd61e8a9389ab',1,'UCC5870_STATUS3_REG_BITS']]],
+  ['mclp_5fstate_5fmask_6',['MCLP_STATE_MASK',['../ucc5870__regs_8h.html#ae03b05ccd9e4b2833a10e5673617aac4',1,'ucc5870_regs.h']]],
+  ['mclpth_7',['MCLPTH',['../struct_u_c_c5870___c_f_g5___r_e_g___b_i_t_s.html#af41f1c2c0cf3f63e0d9057e64058cbfb',1,'UCC5870_CFG5_REG_BITS']]],
+  ['mcu_5fi_5fac_5frst_5fgpio_5fport_8',['MCU_I_AC_RST_GPIO_Port',['../main_8h.html#acdd0eb4997f14fe5fadd22756a537541',1,'main.h']]],
+  ['mcu_5fi_5fac_5frst_5fpin_9',['MCU_I_AC_RST_Pin',['../main_8h.html#a69400138eab84ed2853ea9b693af44a7',1,'main.h']]],
+  ['miller_5fclamp_5fdisable_10',['MILLER_CLAMP_disable',['../ucc5870__regs_8h.html#a4634c2f0d0c35c67023fb595af74b165aea26fef3c81038416b2300e0ba630a84',1,'ucc5870_regs.h']]],
+  ['miller_5fclamp_5fenable_11',['MILLER_CLAMP_enable',['../ucc5870__regs_8h.html#a4634c2f0d0c35c67023fb595af74b165ad00a6107e3209b04cc01e6577169d92b',1,'ucc5870_regs.h']]],
+  ['miller_5fclamp_5fexternal_12',['MILLER_CLAMP_external',['../ucc5870__regs_8h.html#af36057b29ec509cea7696d9932cca15aa0a425805ce193115461959fe80030e83',1,'ucc5870_regs.h']]],
+  ['miller_5fclamp_5finternal_13',['MILLER_CLAMP_internal',['../ucc5870__regs_8h.html#af36057b29ec509cea7696d9932cca15aa2ba9ed640254711df8783b9d2d569333',1,'ucc5870_regs.h']]],
+  ['miller_5fclamp_5fvth_5f1p5v_14',['MILLER_CLAMP_VTH_1p5V',['../ucc5870__regs_8h.html#ae8d54bf17b49ebd54f8c77c41983d606af3399620f78741bccd28d9044d8eecb6',1,'ucc5870_regs.h']]],
+  ['miller_5fclamp_5fvth_5f2v_15',['MILLER_CLAMP_VTH_2V',['../ucc5870__regs_8h.html#ae8d54bf17b49ebd54f8c77c41983d606a849ba85dff35708fb1d26595b112f20a',1,'ucc5870_regs.h']]],
+  ['miller_5fclamp_5fvth_5f3v_16',['MILLER_CLAMP_VTH_3V',['../ucc5870__regs_8h.html#ae8d54bf17b49ebd54f8c77c41983d606a6eb07739cca0210127fde06e056e0ac6',1,'ucc5870_regs.h']]],
+  ['miller_5fclamp_5fvth_5f4v_17',['MILLER_CLAMP_VTH_4V',['../ucc5870__regs_8h.html#ae8d54bf17b49ebd54f8c77c41983d606a19c3ee1a663d17ea16c4c11273ea6db7',1,'ucc5870_regs.h']]]
+];

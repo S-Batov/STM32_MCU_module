@@ -1,0 +1,23 @@
+var searchData=
+[
+  ['gate_5foff_5fchk_0',['GATE_OFF_CHK',['../struct_u_c_c5870___c_o_n_t_r_o_l2___r_e_g___b_i_t_s.html#a519fe24641055412ed30033d3df07aac',1,'UCC5870_CONTROL2_REG_BITS']]],
+  ['gate_5fon_5fchk_1',['GATE_ON_CHK',['../struct_u_c_c5870___c_o_n_t_r_o_l2___r_e_g___b_i_t_s.html#ac7fc07f41a09bf51e62b72047d094116',1,'UCC5870_CONTROL2_REG_BITS']]],
+  ['gd_2',['GD',['../ucc5870_8c.html#a274b1184c66bd9c57d7b2234ac2a4ba0',1,'ucc5870.c']]],
+  ['gd_5f2loff_5fcurr_3',['GD_2LOFF_CURR',['../struct_u_c_c5870___c_f_g8___r_e_g___b_i_t_s.html#abc90928b7ff7129b4a7de11cc833f09d',1,'UCC5870_CFG8_REG_BITS']]],
+  ['gd_5f2loff_5fsto_5fen_4',['GD_2LOFF_STO_EN',['../struct_u_c_c5870___c_f_g8___r_e_g___b_i_t_s.html#a63a7688e1f029f4469aeac44f97b2f4b',1,'UCC5870_CFG8_REG_BITS']]],
+  ['gd_5f2loff_5ftime_5',['GD_2LOFF_TIME',['../struct_u_c_c5870___c_f_g8___r_e_g___b_i_t_s.html#acc16305a94dd2959d5aa902d5d0cb029',1,'UCC5870_CFG8_REG_BITS']]],
+  ['gd_5f2loff_5fvolt_6',['GD_2LOFF_VOLT',['../struct_u_c_c5870___c_f_g8___r_e_g___b_i_t_s.html#a02f7d3a35da306f642953e5579ffaa58',1,'UCC5870_CFG8_REG_BITS']]],
+  ['gd_5faddress_7',['GD_ADDRESS',['../struct_u_c_c5870___g_d___a_d_d_r___r_e_g___b_i_t_s.html#ad0fe5581f9c60767d56396f2278d468a',1,'UCC5870_GD_ADDR_REG_BITS']]],
+  ['gd_5faddress_8',['gd_address',['../struct_u_c_c5870___vars.html#a48271165ad56da60f7433114c0e6f888',1,'UCC5870_Vars']]],
+  ['gd_5ftsd_5ffault_9',['GD_TSD_FAULT',['../struct_u_c_c5870___c_f_g9___r_e_g___b_i_t_s.html#ac8b7a954e502f1244e9ab82cf7d1e27e',1,'UCC5870_CFG9_REG_BITS']]],
+  ['gd_5ftsd_5fsec_5ffault_10',['GD_TSD_SEC_FAULT',['../struct_u_c_c5870___s_t_a_t_u_s4___r_e_g___b_i_t_s.html#a394b536b50be4bd227ce3b661ae0d73c',1,'UCC5870_STATUS4_REG_BITS']]],
+  ['gd_5ftwn_5fdis_11',['GD_TWN_DIS',['../struct_u_c_c5870___c_f_g1___r_e_g___b_i_t_s.html#a44eade9e83258187213971e97a11334a',1,'UCC5870_CFG1_REG_BITS']]],
+  ['gd_5ftwn_5ffault_12',['GD_TWN_FAULT',['../struct_u_c_c5870___c_f_g2___r_e_g___b_i_t_s.html#a472cb17c1d72d171576eabd79acbcc46',1,'UCC5870_CFG2_REG_BITS::GD_TWN_FAULT'],['../struct_u_c_c5870___s_t_a_t_u_s1___r_e_g___b_i_t_s.html#ad53443cb49bf6d9c8468df3122d096a3',1,'UCC5870_STATUS1_REG_BITS::GD_TWN_FAULT']]],
+  ['gd_5ftwn_5fsec_5fen_13',['GD_TWN_SEC_EN',['../struct_u_c_c5870___c_f_g10___r_e_g___b_i_t_s.html#a6e251049b8647ff2d4cc6db9550205ed',1,'UCC5870_CFG10_REG_BITS']]],
+  ['gd_5ftwn_5fsec_5ffault_14',['GD_TWN_SEC_FAULT',['../struct_u_c_c5870___s_t_a_t_u_s4___r_e_g___b_i_t_s.html#a3de4f0a119f0a3ab6eed41a8ff32bf67',1,'UCC5870_STATUS4_REG_BITS']]],
+  ['gm_5fblk_15',['GM_BLK',['../struct_u_c_c5870___c_f_g4___r_e_g___b_i_t_s.html#a913ff49861f42b389e20627679e37fff',1,'UCC5870_CFG4_REG_BITS']]],
+  ['gm_5fen_16',['GM_EN',['../struct_u_c_c5870___c_f_g4___r_e_g___b_i_t_s.html#a201929bda42d03604958710da860ef5e',1,'UCC5870_CFG4_REG_BITS']]],
+  ['gm_5ffault_17',['GM_FAULT',['../struct_u_c_c5870___c_f_g9___r_e_g___b_i_t_s.html#aae028fe9de2192c07edf2898ee156abb',1,'UCC5870_CFG9_REG_BITS::GM_FAULT'],['../struct_u_c_c5870___s_t_a_t_u_s3___r_e_g___b_i_t_s.html#afde1f1aba18c41f7fa9c1fd411bee7b3',1,'UCC5870_STATUS3_REG_BITS::GM_FAULT']]],
+  ['gm_5fstate_18',['GM_STATE',['../struct_u_c_c5870___s_t_a_t_u_s3___r_e_g___b_i_t_s.html#a12e4404d02ded47f3e7f212e33ddd32c',1,'UCC5870_STATUS3_REG_BITS']]],
+  ['gm_5fsto2lto_5fdis_19',['GM_STO2LTO_DIS',['../struct_u_c_c5870___c_f_g5___r_e_g___b_i_t_s.html#a5ec1812d9a99c95465bcd267ede316a3',1,'UCC5870_CFG5_REG_BITS']]]
+];

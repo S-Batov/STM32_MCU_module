@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['sc_5fblk_0',['SC_BLK',['../struct_u_c_c5870___c_f_g6___r_e_g___b_i_t_s.html#aec9541b991d2f33491b7335e45f35bca',1,'UCC5870_CFG6_REG_BITS']]],
+  ['sc_5ffault_1',['SC_FAULT',['../struct_u_c_c5870___c_f_g9___r_e_g___b_i_t_s.html#aa0615cf5ed6b4688eef3dc9ebd9e10e5',1,'UCC5870_CFG9_REG_BITS::SC_FAULT'],['../struct_u_c_c5870___s_t_a_t_u_s3___r_e_g___b_i_t_s.html#a385fcf19e3b3fb7b9c3c10fbab04524e',1,'UCC5870_STATUS3_REG_BITS::SC_FAULT']]],
+  ['scp_5fchk_2',['SCP_CHK',['../struct_u_c_c5870___c_o_n_t_r_o_l2___r_e_g___b_i_t_s.html#a6e8265cb36be66084ec1870359e5ea5c',1,'UCC5870_CONTROL2_REG_BITS']]],
+  ['scp_5fdis_3',['SCP_DIS',['../struct_u_c_c5870___c_f_g4___r_e_g___b_i_t_s.html#a4ee01746e8cfcca3ac4c32adb6406222',1,'UCC5870_CFG4_REG_BITS']]],
+  ['scth_4',['SCTH',['../struct_u_c_c5870___c_f_g6___r_e_g___b_i_t_s.html#a54ce834f2f57e1e5b3de79bf1d42cebd',1,'UCC5870_CFG6_REG_BITS']]],
+  ['sec_5frdy_5',['SEC_RDY',['../struct_u_c_c5870___s_t_a_t_u_s4___r_e_g___b_i_t_s.html#a372636e52b5dd6bb3e3bb2dabb855880',1,'UCC5870_STATUS4_REG_BITS']]],
+  ['secreadyfault_6',['secReadyFault',['../ucc5870_8c.html#a04fe6ee3b7b19df38d7ecfd86b9c02ac',1,'ucc5870.c']]],
+  ['spare_7',['SPARE',['../struct_u_c_c5870___c_f_g9___r_e_g___b_i_t_s.html#aeca25d3e25cddcef81c8843698be55b4',1,'UCC5870_CFG9_REG_BITS::SPARE'],['../struct_u_c_c5870___c_f_g10___r_e_g___b_i_t_s.html#a92d679c402f747228a776d0675841697',1,'UCC5870_CFG10_REG_BITS::SPARE']]],
+  ['spi_5ffault_8',['SPI_FAULT',['../struct_u_c_c5870___c_f_g2___r_e_g___b_i_t_s.html#a7bfd4b6bcfa2a80f1d71cd3505810270',1,'UCC5870_CFG2_REG_BITS::SPI_FAULT'],['../struct_u_c_c5870___s_t_a_t_u_s2___r_e_g___b_i_t_s.html#a9ecda73cbd144d5b3619de8e23db8e3e',1,'UCC5870_STATUS2_REG_BITS::SPI_FAULT']]],
+  ['spitest_9',['spitest',['../struct_u_c_c5870___vars.html#ae9c4cd1478dd7f8f7c5a57340b1e0ab7',1,'UCC5870_Vars']]],
+  ['status1_10',['status1',['../struct_u_c_c5870___vars.html#af6a2661406a5d79ff34cc0e3251d1c59',1,'UCC5870_Vars::status1'],['../ucc5870_8c.html#a7e2700b57256bb247e1620b40f2116ee',1,'status1:&#160;ucc5870.c']]],
+  ['status2_11',['status2',['../struct_u_c_c5870___vars.html#a081ec77b9fd7d0bd54afbcd080e0a581',1,'UCC5870_Vars::status2'],['../ucc5870_8c.html#aa0e87c7d98cee42d3aeb8e2d10dc9118',1,'status2:&#160;ucc5870.c']]],
+  ['status3_12',['status3',['../struct_u_c_c5870___vars.html#ae6a1827a5eb359de6a4fa969a172747c',1,'UCC5870_Vars::status3'],['../ucc5870_8c.html#a3d52bb4e3a7293381a0b1e9e3a84ef14',1,'status3:&#160;ucc5870.c']]],
+  ['status4_13',['status4',['../struct_u_c_c5870___vars.html#a8047cbc5e498c9f872b16bcd578d27cd',1,'UCC5870_Vars::status4'],['../ucc5870_8c.html#afdac71bfe98146b7780c2a7b9cf6b894',1,'status4:&#160;ucc5870.c']]],
+  ['status5_14',['status5',['../struct_u_c_c5870___vars.html#a8fba3379bbd908469fe58da1bd7fdfaa',1,'UCC5870_Vars']]],
+  ['statusfault_15',['statusFault',['../ucc5870_8c.html#aa83251577c2e4475fd339f49f3da0675',1,'ucc5870.c']]],
+  ['statusfaultmask_16',['statusFaultMask',['../ucc5870_8c.html#af078a30e566340ec88d7023886be8ef3',1,'ucc5870.c']]],
+  ['statusregadrs_17',['statusRegAdrs',['../ucc5870_8c.html#a3a5f8ff3915b9dea931cc1a43ee8a244',1,'ucc5870.c']]],
+  ['sto_5fcurr_18',['STO_CURR',['../struct_u_c_c5870___c_f_g5___r_e_g___b_i_t_s.html#a170c8eacd43fb0bd14de00830c719d1c',1,'UCC5870_CFG5_REG_BITS']]],
+  ['stp_5fchk_19',['STP_CHK',['../struct_u_c_c5870___c_o_n_t_r_o_l1___r_e_g___b_i_t_s.html#a8a3edb0bdb87e32ad78e3a4fc511d42b',1,'UCC5870_CONTROL1_REG_BITS']]],
+  ['stp_5ffault_20',['STP_FAULT',['../struct_u_c_c5870___c_f_g2___r_e_g___b_i_t_s.html#ae7839637a0b6e0f38906126993232b05',1,'UCC5870_CFG2_REG_BITS::STP_FAULT'],['../struct_u_c_c5870___s_t_a_t_u_s2___r_e_g___b_i_t_s.html#ad3f9265dc1b9f027b7e0e6b7258ff74d',1,'UCC5870_STATUS2_REG_BITS::STP_FAULT']]]
+];

@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['ucc5870_5fcfg_5fin_0',['UCC5870_CFG_IN',['../ucc5870_8c.html#a8d91e9fc2141b8dc79752f784f5a5e82',1,'ucc5870.c']]],
+  ['ucc5870_5fdefaults_1',['UCC5870_DEFAULTS',['../ucc5870__regs_8h.html#aeb610679dd3b10b0c225a6af7b73c917',1,'ucc5870_regs.h']]],
+  ['ucc5870_5fdrv_5fdis_2',['UCC5870_DRV_DIS',['../ucc5870_8c.html#ac13defbcf2aecc52e4df9c7793596945',1,'ucc5870.c']]],
+  ['ucc5870_5fdrv_5fen_3',['UCC5870_DRV_EN',['../ucc5870_8c.html#a76c4adfe8b3a9e4ec28b7afe00ac2eed',1,'ucc5870.c']]],
+  ['ucc5870_5fnop_4',['UCC5870_NOP',['../ucc5870_8c.html#a9a576b6ddfb4b278d926653e14982297',1,'ucc5870.c']]],
+  ['ucc5870_5frd_5freg_5',['UCC5870_RD_REG',['../ucc5870_8c.html#adedcc0781da626dbbcf00d0629c7222a',1,'ucc5870.c']]],
+  ['ucc5870_5fswreset_6',['UCC5870_SWRESET',['../ucc5870_8c.html#a1831e9133c732eecc758d5820f90c0dd',1,'ucc5870.c']]],
+  ['ucc5870_5fwr_5fca_7',['UCC5870_WR_CA',['../ucc5870_8c.html#a779ff5113cdf7025dce600f8c7a68e16',1,'ucc5870.c']]],
+  ['ucc5870_5fwr_5fdh_8',['UCC5870_WR_DH',['../ucc5870_8c.html#a5db2376c751da4da3813dbbe430de8f8',1,'ucc5870.c']]],
+  ['ucc5870_5fwr_5fdl_9',['UCC5870_WR_DL',['../ucc5870_8c.html#a85a380650cd64667599ae2d6ab279ee8',1,'ucc5870.c']]],
+  ['ucc5870_5fwr_5freg_10',['UCC5870_WR_REG',['../ucc5870_8c.html#a13c1bd09e4e7aa6b24de35bd732b9197',1,'ucc5870.c']]],
+  ['uh_11',['UH',['../ucc5870_8c.html#afde84bed3c7b849caa70678417644468',1,'ucc5870.c']]],
+  ['uh_5faddress_12',['UH_ADDRESS',['../ucc5870_8c.html#a29f30170f17347707b50d6cb4e39e8b0',1,'ucc5870.c']]],
+  ['ul_13',['UL',['../ucc5870_8c.html#a77401f6b813b95031813338afa9221e3',1,'ucc5870.c']]],
+  ['ul_5faddress_14',['UL_ADDRESS',['../ucc5870_8c.html#aa42edd4149dd125be5bddf06bdc3b624',1,'ucc5870.c']]],
+  ['uvlo1_5ffault_5fmask_15',['UVLO1_FAULT_MASK',['../ucc5870__regs_8h.html#ab4a80fbe804fe7e1a34ff923e5abba0e',1,'ucc5870_regs.h']]],
+  ['uvlo2_5ffault_5fmask_16',['UVLO2_FAULT_MASK',['../ucc5870__regs_8h.html#aee6ff3d9b295a9773d02790bbb5b2feb',1,'ucc5870_regs.h']]],
+  ['uvlo3_5ffault_5fmask_17',['UVLO3_FAULT_MASK',['../ucc5870__regs_8h.html#a3701105cc6fa1cb501cb9c2702d47f6c',1,'ucc5870_regs.h']]]
+];

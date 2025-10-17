@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['sc_5ffault_5fmask_0',['SC_FAULT_MASK',['../ucc5870__regs_8h.html#ada3f01235662928e7a07879aeb6750e8',1,'ucc5870_regs.h']]],
+  ['sine_5ftable_5fsize_1',['SINE_TABLE_SIZE',['../_p_w_m__timer_8c.html#a597174ea5be6ca475ea0fddbef1e9af7',1,'PWM_timer.c']]],
+  ['spi1_5fcs_5fdriver_5fgpio_5fport_2',['SPI1_CS_Driver_GPIO_Port',['../main_8h.html#a77b8b6ee8247ee35d6afcb19277f2307',1,'main.h']]],
+  ['spi1_5fcs_5fdriver_5fpin_3',['SPI1_CS_Driver_Pin',['../main_8h.html#a98c081b046534e8ce8f410f118fe4ae7',1,'main.h']]],
+  ['spi_5ffault_5fmask_4',['SPI_FAULT_MASK',['../ucc5870__regs_8h.html#ada246dfb5775ac611ce6827ce0971c2f',1,'ucc5870_regs.h']]],
+  ['spitest_5',['SPITEST',['../ucc5870__regs_8h.html#a74268c54c76d94bf5e2e34be55d79fa4',1,'ucc5870_regs.h']]],
+  ['status1_6',['STATUS1',['../ucc5870__regs_8h.html#aa6aa3353326411951938073499579582',1,'ucc5870_regs.h']]],
+  ['status1_5ffault_5fmask_7',['STATUS1_FAULT_MASK',['../ucc5870_8c.html#aa110632bfbd601ae3bf31e5887ca3984',1,'ucc5870.c']]],
+  ['status2_8',['STATUS2',['../ucc5870__regs_8h.html#a8a45661b5dbec0dd486c957252971162',1,'ucc5870_regs.h']]],
+  ['status2_5ffault_5fmask_9',['STATUS2_FAULT_MASK',['../ucc5870_8c.html#a844ef90c755452049ef93d55815a4303',1,'ucc5870.c']]],
+  ['status3_10',['STATUS3',['../ucc5870__regs_8h.html#a0b38cc45d5478ab85b21f300a076b722',1,'ucc5870_regs.h']]],
+  ['status3_5ffault_5fmask_11',['STATUS3_FAULT_MASK',['../ucc5870_8c.html#a3ca6aee2bd33f9a054731acd41dd17e2',1,'ucc5870.c']]],
+  ['status4_12',['STATUS4',['../ucc5870__regs_8h.html#a1b98738c5c9a9bcb977316aa1564cf78',1,'ucc5870_regs.h']]],
+  ['status4_5ffault_5fmask_13',['STATUS4_FAULT_MASK',['../ucc5870_8c.html#ab2d0f81a0fb0967293a893e858b1dc9f',1,'ucc5870.c']]],
+  ['status5_14',['STATUS5',['../ucc5870__regs_8h.html#ae4cb4fc69ac2437d0573a4666b465e66',1,'ucc5870_regs.h']]],
+  ['status5_5ffault_5fmask_15',['STATUS5_FAULT_MASK',['../ucc5870_8c.html#a2f3ba5234cea325712c17e0680d2b8e8',1,'ucc5870.c']]],
+  ['stp_5ffault_5fmask_16',['STP_FAULT_MASK',['../ucc5870__regs_8h.html#a7699cf6695a76ff399f85eff192bc70f',1,'ucc5870_regs.h']]]
+];

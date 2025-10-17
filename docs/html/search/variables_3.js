@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['data_5fai1_0',['DATA_AI1',['../struct_u_c_c5870___a_d_c_d_a_t_a1___r_e_g___b_i_t_s.html#a768da2ec6107702d3b9c0bcbdacc06e0',1,'UCC5870_ADCDATA1_REG_BITS']]],
+  ['data_5fai2_1',['DATA_AI2',['../struct_u_c_c5870___a_d_c_d_a_t_a4___r_e_g___b_i_t_s.html#a14eb8a583bf3c6efdd2f0e1555e6bd66',1,'UCC5870_ADCDATA4_REG_BITS']]],
+  ['data_5fai3_2',['DATA_AI3',['../struct_u_c_c5870___a_d_c_d_a_t_a2___r_e_g___b_i_t_s.html#a93ad79bd393f1b0d5b942528e69e741a',1,'UCC5870_ADCDATA2_REG_BITS']]],
+  ['data_5fai4_3',['DATA_AI4',['../struct_u_c_c5870___a_d_c_d_a_t_a5___r_e_g___b_i_t_s.html#a7b62bcb07f498fc2694bf1a77f2af329',1,'UCC5870_ADCDATA5_REG_BITS']]],
+  ['data_5fai5_4',['DATA_AI5',['../struct_u_c_c5870___a_d_c_d_a_t_a3___r_e_g___b_i_t_s.html#aa0baf8b4a67be8d47f03a72ea4534a5c',1,'UCC5870_ADCDATA3_REG_BITS']]],
+  ['data_5fai6_5',['DATA_AI6',['../struct_u_c_c5870___a_d_c_d_a_t_a6___r_e_g___b_i_t_s.html#ab9fb60a048da78ff8d5e9d00c106e3d2',1,'UCC5870_ADCDATA6_REG_BITS']]],
+  ['data_5fdtemp_6',['DATA_DTEMP',['../struct_u_c_c5870___a_d_c_d_a_t_a7___r_e_g___b_i_t_s.html#a0571067a0de47e8708d5db64214523a6',1,'UCC5870_ADCDATA7_REG_BITS']]],
+  ['data_5fouth_7',['DATA_OUTH',['../struct_u_c_c5870___a_d_c_d_a_t_a8___r_e_g___b_i_t_s.html#afd1dde7ffde587931d9f476d78677c09',1,'UCC5870_ADCDATA8_REG_BITS']]],
+  ['desat_5fchg_5fcurr_8',['DESAT_CHG_CURR',['../struct_u_c_c5870___c_f_g5___r_e_g___b_i_t_s.html#a2d24f683f9d895303f79d90dacf97b05',1,'UCC5870_CFG5_REG_BITS']]],
+  ['desat_5fchk_9',['DESAT_CHK',['../struct_u_c_c5870___c_o_n_t_r_o_l2___r_e_g___b_i_t_s.html#ad7efb17614829ff06717291dbdbc40eb',1,'UCC5870_CONTROL2_REG_BITS']]],
+  ['desat_5fdchg_5fen_10',['DESAT_DCHG_EN',['../struct_u_c_c5870___c_f_g5___r_e_g___b_i_t_s.html#a32d0314805fca00e73ed027689ae2484',1,'UCC5870_CFG5_REG_BITS']]],
+  ['desat_5fdeglitch_11',['DESAT_DEGLITCH',['../struct_u_c_c5870___c_f_g4___r_e_g___b_i_t_s.html#a29e9c00d2557cf6b2dafc22a17d31230',1,'UCC5870_CFG4_REG_BITS']]],
+  ['desat_5fen_12',['DESAT_EN',['../struct_u_c_c5870___c_f_g4___r_e_g___b_i_t_s.html#aaa2f79663c18c89937f353d541fcee4a',1,'UCC5870_CFG4_REG_BITS']]],
+  ['desat_5ffault_13',['DESAT_FAULT',['../struct_u_c_c5870___s_t_a_t_u_s3___r_e_g___b_i_t_s.html#a8181bdd5cb9144eda088c83d2fbac310',1,'UCC5870_STATUS3_REG_BITS']]],
+  ['desatth_14',['DESATTH',['../struct_u_c_c5870___c_f_g5___r_e_g___b_i_t_s.html#aaeb607fa5b38af6db0b994c1109ffa5f',1,'UCC5870_CFG5_REG_BITS']]],
+  ['diagstatus_15',['diagStatus',['../ucc5870_8c.html#a26cb6eab8db18fa8a785dae5d299b6cf',1,'ucc5870.c']]],
+  ['dout_5fto_5fai1_16',['DOUT_TO_AI1',['../struct_u_c_c5870___d_o_u_t_c_f_g___r_e_g___b_i_t_s.html#abab348d0e6fda5b5a05749d3331a9dba',1,'UCC5870_DOUTCFG_REG_BITS']]],
+  ['dout_5fto_5fai2_17',['DOUT_TO_AI2',['../struct_u_c_c5870___d_o_u_t_c_f_g___r_e_g___b_i_t_s.html#aba8052c3132a262bb5e3a2ecf0311a2f',1,'UCC5870_DOUTCFG_REG_BITS']]],
+  ['dout_5fto_5fai3_18',['DOUT_TO_AI3',['../struct_u_c_c5870___d_o_u_t_c_f_g___r_e_g___b_i_t_s.html#a9fe20fb8059adc3e4683f099fe412892',1,'UCC5870_DOUTCFG_REG_BITS']]],
+  ['dout_5fto_5fai4_19',['DOUT_TO_AI4',['../struct_u_c_c5870___d_o_u_t_c_f_g___r_e_g___b_i_t_s.html#af750e8fb60f5f6da0320bddb2b323890',1,'UCC5870_DOUTCFG_REG_BITS']]],
+  ['dout_5fto_5fai5_20',['DOUT_TO_AI5',['../struct_u_c_c5870___d_o_u_t_c_f_g___r_e_g___b_i_t_s.html#a601b50a13dd9d874acc996d05e1dfc5f',1,'UCC5870_DOUTCFG_REG_BITS']]],
+  ['dout_5fto_5fai6_21',['DOUT_TO_AI6',['../struct_u_c_c5870___d_o_u_t_c_f_g___r_e_g___b_i_t_s.html#aa23e553cad9c3c1fefb4b0ff784f4e12',1,'UCC5870_DOUTCFG_REG_BITS']]],
+  ['dout_5fto_5ftj_22',['DOUT_TO_TJ',['../struct_u_c_c5870___d_o_u_t_c_f_g___r_e_g___b_i_t_s.html#ade957d17a0c152c094b56cdcbf666ed7',1,'UCC5870_DOUTCFG_REG_BITS']]],
+  ['doutcfg_23',['doutcfg',['../struct_u_c_c5870___vars.html#af74106d0f2ac42a5a14b60c2ae28b41d',1,'UCC5870_Vars']]],
+  ['drv_5fen_5frcvd_24',['DRV_EN_RCVD',['../struct_u_c_c5870___s_t_a_t_u_s2___r_e_g___b_i_t_s.html#abba41b28132eb9b7387578431b7dd9f7',1,'UCC5870_STATUS2_REG_BITS']]]
+];

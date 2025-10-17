@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['cfg1_0',['CFG1',['../ucc5870__regs_8h.html#a377695a1f19ae429c664b34207639625',1,'ucc5870_regs.h']]],
+  ['cfg10_1',['CFG10',['../ucc5870__regs_8h.html#a64860ee780cd1682601aad9228c4260f',1,'ucc5870_regs.h']]],
+  ['cfg11_2',['CFG11',['../ucc5870__regs_8h.html#aac245f8fb9f29b96f8e46c9169a36c5a',1,'ucc5870_regs.h']]],
+  ['cfg2_3',['CFG2',['../ucc5870__regs_8h.html#a47d17f74599f0486ab25dc2f4eea012d',1,'ucc5870_regs.h']]],
+  ['cfg3_4',['CFG3',['../ucc5870__regs_8h.html#af7c862f6ddbd97e71441322606b78bf0',1,'ucc5870_regs.h']]],
+  ['cfg4_5',['CFG4',['../ucc5870__regs_8h.html#a38bc509286d285570e8241c6a7b61c78',1,'ucc5870_regs.h']]],
+  ['cfg5_6',['CFG5',['../ucc5870__regs_8h.html#a6025fb97e81a236f5d130279606e3dab',1,'ucc5870_regs.h']]],
+  ['cfg6_7',['CFG6',['../ucc5870__regs_8h.html#a155064481d1f8f0ef5c9f4100222c9a0',1,'ucc5870_regs.h']]],
+  ['cfg7_8',['CFG7',['../ucc5870__regs_8h.html#a90faabe13194540e43e575a2caa26685',1,'ucc5870_regs.h']]],
+  ['cfg8_9',['CFG8',['../ucc5870__regs_8h.html#ac45b2fd9d9c1eef78427e98d1e7408e2',1,'ucc5870_regs.h']]],
+  ['cfg9_10',['CFG9',['../ucc5870__regs_8h.html#a87efda283cec946f71c89086ae2e3827',1,'ucc5870_regs.h']]],
+  ['cfg_5fcrc_5ffault_5fmask_11',['CFG_CRC_FAULT_MASK',['../ucc5870__regs_8h.html#a7559fbbcd78cf814d434ea0b852ec3d3',1,'ucc5870_regs.h']]],
+  ['cfg_5fcrc_5fsec_5ffault_5fmask_12',['CFG_CRC_SEC_FAULT_MASK',['../ucc5870__regs_8h.html#a5b82ecbe98f8a234931a5e74a02b4e70',1,'ucc5870_regs.h']]],
+  ['clear_5ffaults_13',['CLEAR_FAULTS',['../ucc5870_8c.html#a13b59f2b8d3a17d25a81713bdb70c598',1,'ucc5870.c']]],
+  ['clk_5fmon_5ffault_5fmask_14',['CLK_MON_FAULT_MASK',['../ucc5870__regs_8h.html#a8dd576daca7a34c3ead457ef3efa0809',1,'ucc5870_regs.h']]],
+  ['clk_5fmon_5fsec_5ffault_5fmask_15',['CLK_MON_SEC_FAULT_MASK',['../ucc5870__regs_8h.html#a8eaae8a9d0bdc8ae51bb795e4df908ce',1,'ucc5870_regs.h']]],
+  ['control1_16',['CONTROL1',['../ucc5870__regs_8h.html#ae769d83eaed240d95b3015779f46fb39',1,'ucc5870_regs.h']]],
+  ['control2_17',['CONTROL2',['../ucc5870__regs_8h.html#a617342b76e3031a59eba6551236ba304',1,'ucc5870_regs.h']]],
+  ['crcdata_18',['CRCDATA',['../ucc5870__regs_8h.html#afc0157f9f5d1dfbac0f221a25f01382a',1,'ucc5870_regs.h']]]
+];
