@@ -548,7 +548,10 @@ void uart_printf(const char *fmt, ...)
     va_start(args, fmt);
     vsnprintf(buffer, sizeof(buffer), fmt, args);
     va_end(args);
-    UART_Transmit((uint8_t *)buffer, strlen(buffer), HAL_MAX_DELAY);
+    UART_Transmit((uint8_t *)buffer, strlen(buffer));
+	while (UART_is_ready() == UART_NOT_READY)
+	{
+	}
 }
 
 /**

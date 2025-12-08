@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -51,6 +52,9 @@
 ADC_HandleTypeDef hadc1;
 ADC_HandleTypeDef hadc2;
 ADC_HandleTypeDef hadc3;
+DMA_HandleTypeDef hdma_adc1;
+DMA_HandleTypeDef hdma_adc2;
+DMA_HandleTypeDef hdma_adc3;
 
 DAC_HandleTypeDef hdac1;
 
@@ -66,12 +70,31 @@ TIM_HandleTypeDef htim8;
 DMA_HandleTypeDef hdma_tim8_up;
 
 UART_HandleTypeDef huart1;
+DMA_HandleTypeDef hdma_usart1_tx;
 
+/* Definitions for defaultTask */
+osThreadId_t defaultTaskHandle;
+const osThreadAttr_t defaultTask_attributes = {
+  .name = "defaultTask",
+  .priority = (osPriority_t) osPriorityNormal,
+  .stack_size = 128 * 4
+};
+/* Definitions for FaultHandlerTas */
+osThreadId_t FaultHandlerTasHandle;
+const osThreadAttr_t FaultHandlerTas_attributes = {
+  .name = "FaultHandlerTas",
+  .priority = (osPriority_t) osPriorityNormal,
+  .stack_size = 128 * 4
+};
+/* Definitions for faultSem */
+osSemaphoreId_t faultSemHandle;
+const osSemaphoreAttr_t faultSem_attributes = {
+  .name = "faultSem"
+};
 /* USER CODE BEGIN PV */
 
 volatile bool nFLT1_active = false;
 volatile bool nFLT2_active = false;
-volatile bool fault_event_pending = false;
 
 /* USER CODE END PV */
 
@@ -90,6 +113,9 @@ static void MX_ADC3_Init(void);
 static void MX_QUADSPI1_Init(void);
 static void MX_SPI4_Init(void);
 static void MX_USART1_UART_Init(void);
+void StartDefaultTask(void *argument);
+void FaultHandlerTask(void *argument);
+
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -142,7 +168,19 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
-  UART_Transmit((uint8_t *)"Setup start\r\n", strlen("Setup start\r\n"), HAL_MAX_DELAY);
+  UART_Transmit((uint8_t *)"Setup start\r\n", strlen("Setup start\r\n"));
+
+  /* --- Start FDCAN module ----------------------------------------------------*/
+  if (HAL_FDCAN_Start(&hfdcan1) != HAL_OK)
+  {
+      Error_Handler();
+  }
+
+  /* --- Activate notification for received message ----------------------------*/
+  if (HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK)
+  {
+      Error_Handler();
+  }
 
   /* --- Initialize local UCC5870 registers ------------------------------------*/
   Init_UCC5870_Regs();
@@ -153,21 +191,106 @@ int main(void)
   /* --- Set up PWM_timer DMA channels -----------------------------------------*/
   if(PWM_timer_DMA_start() != HAL_OK)
   {
-	    Error_Handler();
+	  Error_Handler();
   }
 
   /* --- Start PWM_timer and PWM generation on MCU pins ------------------------*/
   if(PWM_timer_start() != HAL_OK)
   {
-	    Error_Handler();
+	  Error_Handler();
   }
 
   /* --- Print values of STATUS registers of all gate drivers ------------------*/
   printInverterStatus();
 
-  UART_Transmit((uint8_t *)"\n\nSetup end\r\n", strlen("\n\nSetup end\r\n"), HAL_MAX_DELAY);
+//  uint32_t adc_buf[2]; // Rank1 = CH11, Rank2 = CH14
+//  HAL_ADC_Start_DMA(&hadc1, adc_buf, 2);
+
+  // Wait for conversion complete
+//  while(HAL_DMA_GetState(&hdma_adc1) != HAL_DMA_STATE_READY);
+
+  // Convert to voltage (assuming VDDA = 3.3V)
+//  float v_ch11 = (adc_buf[0] * 3.3f) / 4095.0f;
+//  float v_ch14 = (adc_buf[1] * 3.3f) / 4095.0f;
+
+
+  uint32_t adc2_buf[5]; // Rank1 = CH11, Rank2 = CH14
+  HAL_ADC_Start_DMA(&hadc2, adc2_buf, 5);
+
+  // Wait for conversion complete
+  while(HAL_DMA_GetState(&hdma_adc2) != HAL_DMA_STATE_READY);
+
+  // Convert to voltage (assuming VDDA = 3.3V)
+  float v_ch3 = (adc2_buf[0] * 3.3f) / 4095.0f;
+  float v_ch4 = (adc2_buf[1] * 3.3f) / 4095.0f;
+  float v_ch5 = (adc2_buf[2] * 3.3f) / 4095.0f;
+  float v_ch11 = (adc2_buf[3] * 3.3f) / 4095.0f;
+  float v_ch12 = (adc2_buf[4] * 3.3f) / 4095.0f;
+
+//    uint32_t adc3_buf[7]; // Rank1 = CH11, Rank2 = CH14
+//    HAL_ADC_Start_DMA(&hadc3, adc3_buf, 7);
+
+    // Wait for conversion complete
+//    while(HAL_DMA_GetState(&hdma_adc3) != HAL_DMA_STATE_READY);
+
+    // Convert to voltage (assuming VDDA = 3.3V)
+//    float v_ch2 = (adc3_buf[0] * 3.3f) / 4095.0f;
+//    float v_ch3 = (adc3_buf[1] * 3.3f) / 4095.0f;
+//    float v_ch4 = (adc3_buf[2] * 3.3f) / 4095.0f;
+//    float v_ch6 = (adc3_buf[3] * 3.3f) / 4095.0f;
+//    float v_ch14 = (adc3_buf[4] * 3.3f) / 4095.0f;
+//    float v_ch15 = (adc3_buf[5] * 3.3f) / 4095.0f;
+//    float v_ch16 = (adc3_buf[6] * 3.3f) / 4095.0f;
+
+//  GPIO_PinState DIN1 = HAL_GPIO_ReadPin(DIN_1_GPIO_Port, DIN_1_Pin);
+//  GPIO_PinState DIN2 = HAL_GPIO_ReadPin(DIN_2_GPIO_Port, DIN_2_Pin);
+
+  UART_Transmit((uint8_t *)"\n\nSetup end\r\n", strlen("\n\nSetup end\r\n"));
 
   /* USER CODE END 2 */
+
+  /* Init scheduler */
+  osKernelInitialize();
+
+  /* USER CODE BEGIN RTOS_MUTEX */
+  /* add mutexes, ... */
+  /* USER CODE END RTOS_MUTEX */
+
+  /* Create the semaphores(s) */
+  /* creation of faultSem */
+  faultSemHandle = osSemaphoreNew(1, 0, &faultSem_attributes);
+
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
+  /* add semaphores, ... */
+  /* USER CODE END RTOS_SEMAPHORES */
+
+  /* USER CODE BEGIN RTOS_TIMERS */
+  /* start timers, add new ones, ... */
+  /* USER CODE END RTOS_TIMERS */
+
+  /* USER CODE BEGIN RTOS_QUEUES */
+  /* add queues, ... */
+  /* USER CODE END RTOS_QUEUES */
+
+  /* Create the thread(s) */
+  /* creation of defaultTask */
+  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+
+  /* creation of FaultHandlerTas */
+  FaultHandlerTasHandle = osThreadNew(FaultHandlerTask, NULL, &FaultHandlerTas_attributes);
+
+  /* USER CODE BEGIN RTOS_THREADS */
+  /* add threads, ... */
+  /* USER CODE END RTOS_THREADS */
+
+  /* USER CODE BEGIN RTOS_EVENTS */
+  /* add events, ... */
+  /* USER CODE END RTOS_EVENTS */
+
+  /* Start scheduler */
+  osKernelStart();
+
+  /* We should never get here as control is now taken by the scheduler */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -176,26 +299,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  if (fault_event_pending)
-	  {
-		  printInverterStatus();
-	      fault_event_pending = false;
-	  }
-
-	  // Re-arm logic: only when both cleared
-	  if (nFLT1_active && HAL_GPIO_ReadPin(PWM_BKIN_GPIO_Port, PWM_BKIN_Pin) == GPIO_PIN_SET)
-	  {
-	      nFLT1_active = false;
-	  }
-	  if (nFLT2_active && HAL_GPIO_ReadPin(PWM_BKIN2_GPIO_Port, PWM_BKIN2_Pin) == GPIO_PIN_SET)
-	  {
-	      nFLT2_active = false;
-	  }
-
-	  if (!nFLT1_active && !nFLT2_active)
-	  {
-	      __HAL_TIM_ENABLE_IT(&htim8, TIM_IT_BREAK);
-	  }
   }
   /* USER CODE END 3 */
 }
@@ -271,15 +374,15 @@ static void MX_ADC1_Init(void)
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc1.Init.GainCompensation = 0;
-  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
-  hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
+  hadc1.Init.EOCSelection = ADC_EOC_SEQ_CONV;
   hadc1.Init.LowPowerAutoWait = DISABLE;
   hadc1.Init.ContinuousConvMode = DISABLE;
-  hadc1.Init.NbrOfConversion = 1;
+  hadc1.Init.NbrOfConversion = 2;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  hadc1.Init.DMAContinuousRequests = DISABLE;
+  hadc1.Init.DMAContinuousRequests = ENABLE;
   hadc1.Init.Overrun = ADC_OVR_DATA_PRESERVED;
   hadc1.Init.OversamplingMode = DISABLE;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
@@ -299,10 +402,19 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_11;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_2CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_14;
+  sConfig.Rank = ADC_REGULAR_RANK_2;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -338,15 +450,15 @@ static void MX_ADC2_Init(void)
   hadc2.Init.Resolution = ADC_RESOLUTION_12B;
   hadc2.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc2.Init.GainCompensation = 0;
-  hadc2.Init.ScanConvMode = ADC_SCAN_DISABLE;
-  hadc2.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  hadc2.Init.ScanConvMode = ADC_SCAN_ENABLE;
+  hadc2.Init.EOCSelection = ADC_EOC_SEQ_CONV;
   hadc2.Init.LowPowerAutoWait = DISABLE;
   hadc2.Init.ContinuousConvMode = DISABLE;
-  hadc2.Init.NbrOfConversion = 1;
+  hadc2.Init.NbrOfConversion = 5;
   hadc2.Init.DiscontinuousConvMode = DISABLE;
   hadc2.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc2.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  hadc2.Init.DMAContinuousRequests = DISABLE;
+  hadc2.Init.DMAContinuousRequests = ENABLE;
   hadc2.Init.Overrun = ADC_OVR_DATA_PRESERVED;
   hadc2.Init.OversamplingMode = DISABLE;
   if (HAL_ADC_Init(&hadc2) != HAL_OK)
@@ -358,10 +470,46 @@ static void MX_ADC2_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_3;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_2CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_4;
+  sConfig.Rank = ADC_REGULAR_RANK_2;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_5;
+  sConfig.Rank = ADC_REGULAR_RANK_3;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_11;
+  sConfig.Rank = ADC_REGULAR_RANK_4;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_12;
+  sConfig.Rank = ADC_REGULAR_RANK_5;
   if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -398,15 +546,15 @@ static void MX_ADC3_Init(void)
   hadc3.Init.Resolution = ADC_RESOLUTION_12B;
   hadc3.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc3.Init.GainCompensation = 0;
-  hadc3.Init.ScanConvMode = ADC_SCAN_DISABLE;
-  hadc3.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  hadc3.Init.ScanConvMode = ADC_SCAN_ENABLE;
+  hadc3.Init.EOCSelection = ADC_EOC_SEQ_CONV;
   hadc3.Init.LowPowerAutoWait = DISABLE;
   hadc3.Init.ContinuousConvMode = DISABLE;
-  hadc3.Init.NbrOfConversion = 1;
+  hadc3.Init.NbrOfConversion = 7;
   hadc3.Init.DiscontinuousConvMode = DISABLE;
   hadc3.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc3.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  hadc3.Init.DMAContinuousRequests = DISABLE;
+  hadc3.Init.DMAContinuousRequests = ENABLE;
   hadc3.Init.Overrun = ADC_OVR_DATA_PRESERVED;
   hadc3.Init.OversamplingMode = DISABLE;
   if (HAL_ADC_Init(&hadc3) != HAL_OK)
@@ -424,12 +572,66 @@ static void MX_ADC3_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_14;
+  sConfig.Channel = ADC_CHANNEL_2;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_2CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
+  if (HAL_ADC_ConfigChannel(&hadc3, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_3;
+  sConfig.Rank = ADC_REGULAR_RANK_2;
+  if (HAL_ADC_ConfigChannel(&hadc3, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_4;
+  sConfig.Rank = ADC_REGULAR_RANK_3;
+  if (HAL_ADC_ConfigChannel(&hadc3, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_6;
+  sConfig.Rank = ADC_REGULAR_RANK_4;
+  if (HAL_ADC_ConfigChannel(&hadc3, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_14;
+  sConfig.Rank = ADC_REGULAR_RANK_5;
+  if (HAL_ADC_ConfigChannel(&hadc3, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_15;
+  sConfig.Rank = ADC_REGULAR_RANK_6;
+  if (HAL_ADC_ConfigChannel(&hadc3, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_16;
+  sConfig.Rank = ADC_REGULAR_RANK_7;
   if (HAL_ADC_ConfigChannel(&hadc3, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -813,6 +1015,7 @@ static void MX_USART1_UART_Init(void)
 {
 
   /* USER CODE BEGIN USART1_Init 0 */
+	__HAL_LINKDMA(&huart1, hdmatx, hdma_usart1_tx);
 
   /* USER CODE END USART1_Init 0 */
 
@@ -863,9 +1066,21 @@ static void MX_DMA_Init(void)
   __HAL_RCC_DMA1_CLK_ENABLE();
 
   /* DMA interrupt init */
+  /* DMA1_Channel1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
   /* DMA1_Channel2_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel2_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(DMA1_Channel2_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel2_IRQn);
+  /* DMA1_Channel3_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel3_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel3_IRQn);
+  /* DMA1_Channel4_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel4_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel4_IRQn);
+  /* DMA1_Channel5_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);
 
 }
 
@@ -955,7 +1170,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(SPI1_CS_Driver_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI2_IRQn, 0, 0);
+  HAL_NVIC_SetPriority(EXTI2_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(EXTI2_IRQn);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
@@ -967,25 +1182,121 @@ static void MX_GPIO_Init(void)
 
 void HAL_TIMEx_BreakCallback(TIM_HandleTypeDef *htim)
 {
-    if (htim->Instance == TIM8 && !nFLT1_active)
+    if(htim->Instance == TIM8 && !nFLT1_active)
     {
         nFLT1_active = true;
-        fault_event_pending = true;
-        __HAL_TIM_DISABLE_IT(htim, TIM_IT_BREAK); // mask until handled
+        osSemaphoreRelease(faultSemHandle);
+        __HAL_TIM_DISABLE_IT(htim, TIM_IT_BREAK);
     }
 }
 
 void HAL_TIMEx_Break2Callback(TIM_HandleTypeDef *htim)
 {
-    if (htim->Instance == TIM8 && !nFLT2_active)
+    if(htim->Instance == TIM8 && !nFLT2_active)
     {
         nFLT2_active = true;
-        fault_event_pending = true;
-        __HAL_TIM_DISABLE_IT(htim, TIM_IT_BREAK); // mask until handled
+        osSemaphoreRelease(faultSemHandle);
+        __HAL_TIM_DISABLE_IT(htim, TIM_IT_BREAK);
     }
 }
 
 /* USER CODE END 4 */
+
+/* USER CODE BEGIN Header_StartDefaultTask */
+/**
+  * @brief  Function implementing the defaultTask thread.
+  * @param  argument: Not used
+  * @retval None
+  */
+/* USER CODE END Header_StartDefaultTask */
+void StartDefaultTask(void *argument)
+{
+  /* USER CODE BEGIN 5 */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END 5 */
+}
+
+/* USER CODE BEGIN Header_FaultHandlerTask */
+/**
+* @brief Function implementing the FaultHandlerTas thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_FaultHandlerTask */
+void FaultHandlerTask(void *argument)
+{
+  /* USER CODE BEGIN FaultHandlerTask */
+  /* Infinite loop */
+    for(;;)
+    {
+        // Wait for ANY fault event
+        osSemaphoreAcquire(faultSemHandle, osWaitForever);
+
+        // --- Run diagnostics for ANY pending fault ---
+        printInverterStatus();
+
+        // Continue looping until ALL faults have cleared
+        bool allCleared = false;
+
+        while (!allCleared)
+        {
+            // Re-check fault input pins
+            if (nFLT1_active &&
+                HAL_GPIO_ReadPin(PWM_BKIN_GPIO_Port, PWM_BKIN_Pin) == GPIO_PIN_SET)
+            {
+                nFLT1_active = false;
+            }
+
+            if (nFLT2_active &&
+                HAL_GPIO_ReadPin(PWM_BKIN2_GPIO_Port, PWM_BKIN2_Pin) == GPIO_PIN_SET)
+            {
+                nFLT2_active = false;
+            }
+
+            // Check if all are cleared
+            allCleared = (!nFLT1_active && !nFLT2_active);
+
+            // If not cleared, wait but do NOT block the scheduler
+            if (!allCleared)
+                osDelay(1);
+
+            // If another ISR happens here:
+            // - ISR will set nFLT1_active or nFLT2_active
+            // - ISR will release the semaphore again
+            // This loop will detect it immediately on next iteration
+        }
+
+        // All faults cleared → re-arm BKIN interrupts
+        __HAL_TIM_ENABLE_IT(&htim8, TIM_IT_BREAK);
+    }
+  /* USER CODE END FaultHandlerTask */
+}
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM6 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM6)
+  {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.

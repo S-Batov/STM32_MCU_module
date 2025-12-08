@@ -17,6 +17,9 @@
 
 #include "main.h"
 
+#define UART_READY     1
+#define UART_NOT_READY 0
+
 /**
  * @brief Transmit data over UART1
  *
@@ -32,7 +35,7 @@
  * @note The UART1 peripheral must be initialized before calling this function
  * @warning This function is blocking; use it only when timing requirements allow it.
  */
-HAL_StatusTypeDef UART_Transmit(uint8_t *pData, uint16_t Size, uint32_t Timeout);
+HAL_StatusTypeDef UART_Transmit(uint8_t *pData, uint16_t Size);
 
 /**
  * @brief Receive data over UART1
@@ -51,6 +54,10 @@ HAL_StatusTypeDef UART_Transmit(uint8_t *pData, uint16_t Size, uint32_t Timeout)
  */
 HAL_StatusTypeDef UART_Receive(uint8_t *pData, uint16_t Size, uint32_t Timeout);
 
-
+/**
+ *
+ * @return
+ */
+uint8_t UART_is_ready();
 
 #endif /*_UART_H_ */

@@ -7,6 +7,7 @@
 #include "stm32g474xx.h"   // Brings in IRQn_Type definitions
 #include "stm32g4xx_hal.h"
 #include <math.h>
+#include "UART.h"
 
 #define SINE_TABLE_SIZE 256
 #define PWM_MAX_DUTY    3999    // ARR value for 16 kHz PWM (0..3999)
@@ -112,6 +113,11 @@ HAL_StatusTypeDef PWM_timer_start(void)
 {
 	/* --- 1. Disable the Main Output Enable (MOE) to safely configure outputs ---*/
 	PWM_timer_MOE_disable();
+
+	while (UART_is_ready() == UART_NOT_READY)
+	  {
+	  }
+	HAL_Delay(1); // give bus time to settle
 
 	/* --- 2. Starts TIM8 base counter and all PWM channels ----------------------*/
 	if(HAL_TIM_Base_Start(&htim8) != HAL_OK)
