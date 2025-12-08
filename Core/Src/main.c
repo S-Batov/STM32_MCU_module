@@ -29,6 +29,7 @@
 #include "ucc5870.h"
 #include "ucc5870_regs.h"
 
+#include "GPIO_status.h"
 #include "UART.h"
 #include "PWM_timer.h"
 /* USER CODE END Includes */
@@ -86,6 +87,13 @@ const osThreadAttr_t FaultHandlerTas_attributes = {
   .priority = (osPriority_t) osPriorityNormal,
   .stack_size = 128 * 4
 };
+/* Definitions for AnalogRead */
+osThreadId_t AnalogReadHandle;
+const osThreadAttr_t AnalogRead_attributes = {
+  .name = "AnalogRead",
+  .priority = (osPriority_t) osPriorityNormal,
+  .stack_size = 128 * 4
+};
 /* Definitions for faultSem */
 osSemaphoreId_t faultSemHandle;
 const osSemaphoreAttr_t faultSem_attributes = {
@@ -115,6 +123,7 @@ static void MX_SPI4_Init(void);
 static void MX_USART1_UART_Init(void);
 void StartDefaultTask(void *argument);
 void FaultHandlerTask(void *argument);
+void AnalogReadTask(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -203,15 +212,6 @@ int main(void)
   /* --- Print values of STATUS registers of all gate drivers ------------------*/
   printInverterStatus();
 
-//  uint32_t adc_buf[2]; // Rank1 = CH11, Rank2 = CH14
-//  HAL_ADC_Start_DMA(&hadc1, adc_buf, 2);
-
-  // Wait for conversion complete
-//  while(HAL_DMA_GetState(&hdma_adc1) != HAL_DMA_STATE_READY);
-
-  // Convert to voltage (assuming VDDA = 3.3V)
-//  float v_ch11 = (adc_buf[0] * 3.3f) / 4095.0f;
-//  float v_ch14 = (adc_buf[1] * 3.3f) / 4095.0f;
 
 
   uint32_t adc2_buf[5]; // Rank1 = CH11, Rank2 = CH14
@@ -278,6 +278,9 @@ int main(void)
 
   /* creation of FaultHandlerTas */
   FaultHandlerTasHandle = osThreadNew(FaultHandlerTask, NULL, &FaultHandlerTas_attributes);
+
+  /* creation of AnalogRead */
+  AnalogReadHandle = osThreadNew(AnalogReadTask, NULL, &AnalogRead_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -400,7 +403,7 @@ static void MX_ADC1_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_11;
+  sConfig.Channel = ADC_CHANNEL_14;
   sConfig.Rank = ADC_REGULAR_RANK_1;
   sConfig.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
@@ -413,7 +416,7 @@ static void MX_ADC1_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_14;
+  sConfig.Channel = ADC_CHANNEL_11;
   sConfig.Rank = ADC_REGULAR_RANK_2;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
@@ -456,8 +459,8 @@ static void MX_ADC2_Init(void)
   hadc2.Init.ContinuousConvMode = DISABLE;
   hadc2.Init.NbrOfConversion = 5;
   hadc2.Init.DiscontinuousConvMode = DISABLE;
-  hadc2.Init.ExternalTrigConv = ADC_SOFTWARE_START;
-  hadc2.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  hadc2.Init.ExternalTrigConv = ADC_EXTERNALTRIG_T8_TRGO;
+  hadc2.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_RISING;
   hadc2.Init.DMAContinuousRequests = ENABLE;
   hadc2.Init.Overrun = ADC_OVR_DATA_PRESERVED;
   hadc2.Init.OversamplingMode = DISABLE;
@@ -552,8 +555,8 @@ static void MX_ADC3_Init(void)
   hadc3.Init.ContinuousConvMode = DISABLE;
   hadc3.Init.NbrOfConversion = 7;
   hadc3.Init.DiscontinuousConvMode = DISABLE;
-  hadc3.Init.ExternalTrigConv = ADC_SOFTWARE_START;
-  hadc3.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  hadc3.Init.ExternalTrigConv = ADC_EXTERNALTRIG_T8_TRGO;
+  hadc3.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_RISING;
   hadc3.Init.DMAContinuousRequests = ENABLE;
   hadc3.Init.Overrun = ADC_OVR_DATA_PRESERVED;
   hadc3.Init.OversamplingMode = DISABLE;
@@ -944,9 +947,9 @@ static void MX_TIM8_Init(void)
   {
     Error_Handler();
   }
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_UPDATE;
   sMasterConfig.MasterOutputTrigger2 = TIM_TRGO2_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_ENABLE;
   if (HAL_TIMEx_MasterConfigSynchronization(&htim8, &sMasterConfig) != HAL_OK)
   {
     Error_Handler();
@@ -1081,6 +1084,9 @@ static void MX_DMA_Init(void)
   /* DMA1_Channel5_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);
+  /* DMAMUX_OVR_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMAMUX_OVR_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMAMUX_OVR_IRQn);
 
 }
 
@@ -1274,6 +1280,48 @@ void FaultHandlerTask(void *argument)
         __HAL_TIM_ENABLE_IT(&htim8, TIM_IT_BREAK);
     }
   /* USER CODE END FaultHandlerTask */
+}
+
+/* USER CODE BEGIN Header_AnalogReadTask */
+/**
+* @brief Function implementing the AnalogRead thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_AnalogReadTask */
+void AnalogReadTask(void *argument)
+{
+	/* USER CODE BEGIN AnalogReadTask */
+	/* Infinite loop */
+	for(;;)
+	{
+		uint32_t adc_buf[2]; 	/* [0] - Rank 1 - AIN1 - CH14 */
+								/* [1] - Rank 2 - AIN2 - CH11 */
+
+		HAL_ADC_Start_DMA(&hadc1, adc_buf, 2);
+
+		// Wait for conversion complete
+		while(HAL_DMA_GetState(&hdma_adc1) != HAL_DMA_STATE_READY);
+
+		// Transfer data from DMA buffer to struct and scale
+	    for (int i = 0; i < AIN_NUM; i++)
+	    {
+	        AIN[i].raw = adc_buf[i];
+
+	        uint32_t min = AIN[i].min;
+	        uint32_t max = AIN[i].max;
+	        uint32_t range = (max > min) ? (max - min) : 1;
+
+	        uint32_t clipped = (AIN[i].raw < min) ? min :
+	                           (AIN[i].raw > max) ? max :
+	                           AIN[i].raw;
+
+	        AIN[i].percentage = ((clipped - min) * 100UL) / range;
+	    }
+
+		osDelay(100);
+	}
+	/* USER CODE END AnalogReadTask */
 }
 
 /**
