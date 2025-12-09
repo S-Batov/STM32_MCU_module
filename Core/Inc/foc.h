@@ -16,7 +16,7 @@
 extern uint16_t ADC3_DMA_buff[ADC3_CH_NUM];
 
 #define I_U_HI  0 /* Rank 1 - CH2  */
-#define I_v_HI  1 /* Rank 2 - CH15 */
+#define I_V_HI  1 /* Rank 2 - CH15 */
 #define I_U_LO  2 /* Rank 3 - CH14 */
 #define I_V_LO  3 /* Rank 4 - CH16 */
 #define I_DC_HI 4 /* Rank 5 - CH4  */
