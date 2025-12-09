@@ -32,6 +32,7 @@
 #include "GPIO_status.h"
 #include "UART.h"
 #include "PWM_timer.h"
+#include "rampgen.h"
 #include "foc.h"
 /* USER CODE END Includes */
 
@@ -104,6 +105,8 @@ const osSemaphoreAttr_t faultSem_attributes = {
 
 volatile bool nFLT1_active = false;
 volatile bool nFLT2_active = false;
+
+RampGen rg;
 
 /* USER CODE END PV */
 
@@ -198,6 +201,11 @@ int main(void)
   /* --- Initialize UCC5870 registers via SPI ----------------------------------*/
   Init_UCC5870();
 
+  rg.StepAngleMax = 0.0001;
+  rg.Freq = 0.05;
+  rg.Angle = 0;
+  rg.Out = 0;
+
   FOC_start_ADC_DMA();
 
   /* --- Set up PWM_timer DMA channels -----------------------------------------*/
@@ -247,8 +255,6 @@ int main(void)
 
 //  GPIO_PinState DIN1 = HAL_GPIO_ReadPin(DIN_1_GPIO_Port, DIN_1_Pin);
 //  GPIO_PinState DIN2 = HAL_GPIO_ReadPin(DIN_2_GPIO_Port, DIN_2_Pin);
-
-
 
   UART_Transmit((uint8_t *)"\n\nSetup end\r\n", strlen("\n\nSetup end\r\n"));
 
@@ -1343,7 +1349,11 @@ void AnalogReadTask(void *argument)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   /* USER CODE BEGIN Callback 0 */
-
+  if(htim->Instance == TIM8)
+  {
+	  RampGen_step(&rg);
+	  FOC_run();
+  }
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM6)
   {
