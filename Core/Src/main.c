@@ -32,6 +32,7 @@
 #include "GPIO_status.h"
 #include "UART.h"
 #include "PWM_timer.h"
+#include "foc.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -197,6 +198,8 @@ int main(void)
   /* --- Initialize UCC5870 registers via SPI ----------------------------------*/
   Init_UCC5870();
 
+  FOC_start_ADC_DMA();
+
   /* --- Set up PWM_timer DMA channels -----------------------------------------*/
   if(PWM_timer_DMA_start() != HAL_OK)
   {
@@ -214,18 +217,18 @@ int main(void)
 
 
 
-  uint32_t adc2_buf[5]; // Rank1 = CH11, Rank2 = CH14
-  HAL_ADC_Start_DMA(&hadc2, adc2_buf, 5);
+//  uint32_t adc2_buf[5]; // Rank1 = CH11, Rank2 = CH14
+//  HAL_ADC_Start_DMA(&hadc2, adc2_buf, 5);
 
   // Wait for conversion complete
-  while(HAL_DMA_GetState(&hdma_adc2) != HAL_DMA_STATE_READY);
+//  while(HAL_DMA_GetState(&hdma_adc2) != HAL_DMA_STATE_READY);
 
   // Convert to voltage (assuming VDDA = 3.3V)
-  float v_ch3 = (adc2_buf[0] * 3.3f) / 4095.0f;
-  float v_ch4 = (adc2_buf[1] * 3.3f) / 4095.0f;
-  float v_ch5 = (adc2_buf[2] * 3.3f) / 4095.0f;
-  float v_ch11 = (adc2_buf[3] * 3.3f) / 4095.0f;
-  float v_ch12 = (adc2_buf[4] * 3.3f) / 4095.0f;
+//  float v_ch3 = (adc2_buf[0] * 3.3f) / 4095.0f;
+//  float v_ch4 = (adc2_buf[1] * 3.3f) / 4095.0f;
+//  float v_ch5 = (adc2_buf[2] * 3.3f) / 4095.0f;
+//  float v_ch11 = (adc2_buf[3] * 3.3f) / 4095.0f;
+//  float v_ch12 = (adc2_buf[4] * 3.3f) / 4095.0f;
 
 //    uint32_t adc3_buf[7]; // Rank1 = CH11, Rank2 = CH14
 //    HAL_ADC_Start_DMA(&hadc3, adc3_buf, 7);
@@ -244,6 +247,8 @@ int main(void)
 
 //  GPIO_PinState DIN1 = HAL_GPIO_ReadPin(DIN_1_GPIO_Port, DIN_1_Pin);
 //  GPIO_PinState DIN2 = HAL_GPIO_ReadPin(DIN_2_GPIO_Port, DIN_2_Pin);
+
+
 
   UART_Transmit((uint8_t *)"\n\nSetup end\r\n", strlen("\n\nSetup end\r\n"));
 
@@ -588,7 +593,7 @@ static void MX_ADC3_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_3;
+  sConfig.Channel = ADC_CHANNEL_15;
   sConfig.Rank = ADC_REGULAR_RANK_2;
   if (HAL_ADC_ConfigChannel(&hadc3, &sConfig) != HAL_OK)
   {
@@ -597,7 +602,7 @@ static void MX_ADC3_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_4;
+  sConfig.Channel = ADC_CHANNEL_14;
   sConfig.Rank = ADC_REGULAR_RANK_3;
   if (HAL_ADC_ConfigChannel(&hadc3, &sConfig) != HAL_OK)
   {
@@ -606,7 +611,7 @@ static void MX_ADC3_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_6;
+  sConfig.Channel = ADC_CHANNEL_16;
   sConfig.Rank = ADC_REGULAR_RANK_4;
   if (HAL_ADC_ConfigChannel(&hadc3, &sConfig) != HAL_OK)
   {
@@ -615,7 +620,7 @@ static void MX_ADC3_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_14;
+  sConfig.Channel = ADC_CHANNEL_4;
   sConfig.Rank = ADC_REGULAR_RANK_5;
   if (HAL_ADC_ConfigChannel(&hadc3, &sConfig) != HAL_OK)
   {
@@ -624,7 +629,7 @@ static void MX_ADC3_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_15;
+  sConfig.Channel = ADC_CHANNEL_6;
   sConfig.Rank = ADC_REGULAR_RANK_6;
   if (HAL_ADC_ConfigChannel(&hadc3, &sConfig) != HAL_OK)
   {
@@ -633,7 +638,7 @@ static void MX_ADC3_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_16;
+  sConfig.Channel = ADC_CHANNEL_3;
   sConfig.Rank = ADC_REGULAR_RANK_7;
   if (HAL_ADC_ConfigChannel(&hadc3, &sConfig) != HAL_OK)
   {
@@ -1084,9 +1089,6 @@ static void MX_DMA_Init(void)
   /* DMA1_Channel5_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);
-  /* DMAMUX_OVR_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMAMUX_OVR_IRQn, 5, 0);
-  HAL_NVIC_EnableIRQ(DMAMUX_OVR_IRQn);
 
 }
 
@@ -1206,6 +1208,12 @@ void HAL_TIMEx_Break2Callback(TIM_HandleTypeDef *htim)
     }
 }
 
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
+{
+    // this is your own function
+	;
+}
+
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartDefaultTask */
@@ -1291,7 +1299,7 @@ void FaultHandlerTask(void *argument)
 /* USER CODE END Header_AnalogReadTask */
 void AnalogReadTask(void *argument)
 {
-	/* USER CODE BEGIN AnalogReadTask */
+  /* USER CODE BEGIN AnalogReadTask */
 	/* Infinite loop */
 	for(;;)
 	{
@@ -1321,7 +1329,7 @@ void AnalogReadTask(void *argument)
 
 		osDelay(100);
 	}
-	/* USER CODE END AnalogReadTask */
+  /* USER CODE END AnalogReadTask */
 }
 
 /**
