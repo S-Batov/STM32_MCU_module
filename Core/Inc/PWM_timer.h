@@ -15,6 +15,23 @@
 
 #include "stm32g4xx_hal.h"
 
+#define PWM_FREQUENCY 16000.0f
+#define PWM_ISR_FREQUENCY (2.0f * PWM_FREQUENCY)
+
+typedef struct {
+	float duty_cycle_uvw[3];
+	float modulation_limit;
+} PWM_data_pu;
+
+/**
+ * @brief Initialize the PWM_data struct to default duty cycle and
+ * modulation limit values
+ *
+ * @param duty    [in] - default duty cycle value to be stored to CCR
+ * @param mod_lim [in] - maximum duty cycle value to be stored in CCR
+ */
+void PWM_data_init(float duty, float mod_lim);
+
 /**
  * @brief Start DMA transfer for PWM timer
  *
@@ -52,5 +69,11 @@ HAL_StatusTypeDef PWM_timer_DMA_start(void);
  *         - HAL_ERROR: Failure in starting timer or PWM channels
  */
 HAL_StatusTypeDef PWM_timer_start(void);
+
+/**
+ * @brief Write the the duty cycle value from pwm_data in PU to
+ * CCR register value in clock counts
+ */
+void PWM_timer_write_data_to_reg();
 
 #endif // _PWM_timer_H_

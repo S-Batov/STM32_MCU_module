@@ -11,14 +11,15 @@
 #include <stdint.h>
 
 typedef struct {
-	float Freq; 		  /* Input: Ramp frequency (pu)         */
-	float StepAngleMax;   /* Parameter: Maximum step angle (pu) */
-	float Angle;		  /* Variable: Step angle (pu)          */
-	float Out;  	 	  /* Output: Ramp signal (pu)           */
+	float Freq; 		/* Input: Ramp frequency (pu)         */
+	float StepAngleMax; /* Parameter: Maximum step angle (pu) */
+	float Angle;		/* Variable: Step angle (pu)          */
+	float Out;  	 	/* Output: Ramp signal (pu)           */
 } RampGen;
 
 /**
- * @brief Compute the ramp generator angle
+ * @brief Compute the ramp generator angle.
+ * @note RampGen->Out value ranges between -1 and 1, and circles back around.
  *
  * @param rg[in/out] - Ramp generator pointer
  */
@@ -30,11 +31,11 @@ static inline void RampGen_step(RampGen *rg)
 	// Saturate the angle rate within (-1,1)
 	if(rg->Angle > 1.0)
 	{
-		rg->Angle -= 1.0;
+		rg->Angle = -1.0;
 	}
 	else if(rg->Angle < -1.0)
 	{
-		rg->Angle += 1.0;
+		rg->Angle = 1.0;
 	}
 
 	rg->Out = rg->Angle;

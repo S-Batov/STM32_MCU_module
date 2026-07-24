@@ -19,7 +19,12 @@ HAL_StatusTypeDef SPI_TransmitReceive_Driver(uint8_t *pTxData, uint8_t *pRxData,
     return HAL_SPI_TransmitReceive(&hspi1, pTxData, pRxData, Size, Timeout);
 }
 
-HAL_StatusTypeDef SPI_TransmitReceive_Encoder(uint8_t *pTxData, uint8_t *pRxData, uint16_t Size, uint32_t Timeout)
+HAL_StatusTypeDef SPI_TransmitReceive_Encoder(uint8_t *pTxData, uint8_t *pRxData, uint16_t Size)
 {
-    return HAL_SPI_TransmitReceive(&hspi4, pTxData, pRxData, Size, Timeout);
+    return HAL_SPI_TransmitReceive_DMA(&hspi4, pTxData, pRxData, Size);
+}
+
+HAL_SPI_StateTypeDef SPI_get_encoder_state()
+{
+	return HAL_SPI_GetState(&hspi4);
 }

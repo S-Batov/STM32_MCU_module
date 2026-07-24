@@ -34,6 +34,7 @@
 #include "PWM_timer.h"
 #include "rampgen.h"
 #include "foc.h"
+#include "CORDIC.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -59,6 +60,8 @@ DMA_HandleTypeDef hdma_adc1;
 DMA_HandleTypeDef hdma_adc2;
 DMA_HandleTypeDef hdma_adc3;
 
+CORDIC_HandleTypeDef hcordic;
+
 DAC_HandleTypeDef hdac1;
 
 FDCAN_HandleTypeDef hfdcan1;
@@ -67,6 +70,8 @@ QSPI_HandleTypeDef hqspi1;
 
 SPI_HandleTypeDef hspi1;
 SPI_HandleTypeDef hspi4;
+DMA_HandleTypeDef hdma_spi4_rx;
+DMA_HandleTypeDef hdma_spi4_tx;
 
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim8;
@@ -103,10 +108,55 @@ const osSemaphoreAttr_t faultSem_attributes = {
 };
 /* USER CODE BEGIN PV */
 
+Analog_IN AIN[AIN_NUM] =
+{
+	[0] = { AIN_1_GPIO_Port, /* port */
+			AIN_1_Pin,       /* pin */
+			0,               /* raw */
+			ADC_MAX_VAL_12B, /* max */
+			0,               /* min */
+			0                /* percentage */
+		},
+
+	[1] = { AIN_2_GPIO_Port, /* port */
+			AIN_2_Pin,       /* pin */
+			0,               /* raw */
+			ADC_MAX_VAL_12B, /* max */
+			0,               /* min */
+			0                /* percentage */
+		}
+};
+
+Digital_IN DIN[DIN_NUM] =
+{
+	[0] = { DIN_1_GPIO_Port, DIN_1_Pin },
+	[1] = { DIN_2_GPIO_Port, DIN_2_Pin }
+};
+
+Digital_OUT DOUT[DOUT_NUM] =
+{
+	[0] = { DOUT_1_GPIO_Port,    /* port */
+			DOUT_1_Pin,          /* pin */
+			DOUT_1_EN_GPIO_Port, /* en_port */
+			DOUT_1_EN_Pin,       /* en_pin */
+			DOUT_1_FB_GPIO_Port, /* fb_port */
+			DOUT_1_FB_Pin        /* fb_pin */
+		},
+
+	[1] = { DOUT_2_GPIO_Port,    /* port */
+			DOUT_2_Pin,          /* pin */
+			DOUT_2_EN_GPIO_Port, /* en_port */
+			DOUT_2_EN_Pin,       /* en_pin */
+			DOUT_2_FB_GPIO_Port, /* fb_port */
+			DOUT_2_FB_Pin        /* fb_pin */
+		}
+};
+
 volatile bool nFLT1_active = false;
 volatile bool nFLT2_active = false;
 
 RampGen rg;
+Motor_t motor;
 
 /* USER CODE END PV */
 
@@ -125,6 +175,7 @@ static void MX_ADC3_Init(void);
 static void MX_QUADSPI1_Init(void);
 static void MX_SPI4_Init(void);
 static void MX_USART1_UART_Init(void);
+static void MX_CORDIC_Init(void);
 void StartDefaultTask(void *argument);
 void FaultHandlerTask(void *argument);
 void AnalogReadTask(void *argument);
@@ -179,6 +230,7 @@ int main(void)
   MX_QUADSPI1_Init();
   MX_SPI4_Init();
   MX_USART1_UART_Init();
+  MX_CORDIC_Init();
   /* USER CODE BEGIN 2 */
 
   UART_Transmit((uint8_t *)"Setup start\r\n", strlen("Setup start\r\n"));
@@ -199,14 +251,34 @@ int main(void)
   Init_UCC5870_Regs();
 
   /* --- Initialize UCC5870 registers via SPI ----------------------------------*/
-  Init_UCC5870();
+//  if(Init_UCC5870() != ALL_GOOD)
+//  {
+//	  Error_Handler();
+//  }
 
+  /* --- Initialize motor parameters -------------------------------------------*/
+  FOC_motor_init(&motor);
+
+  /* --- Initialize encoder angle ----------------------------------------------*/
+  if(FOC_encoder_init(&motor) != FOC_ALL_GOOD)
+  {
+	  Error_Handler();
+  }
+
+  // TODO: remove
   rg.StepAngleMax = 0.0001;
   rg.Freq = 0.05;
   rg.Angle = 0;
   rg.Out = 0;
 
-  FOC_start_ADC_DMA();
+  /* --- Start FOC analog value sampling ---------------------------------------*/
+  if (FOC_start_ADC_DMA() != HAL_OK)
+  {
+	  Error_Handler();
+  }
+
+  /* --- Set initial duty cycle and modulation limit ---------------------------*/
+  PWM_data_init(-1.0, 1.0);
 
   /* --- Set up PWM_timer DMA channels -----------------------------------------*/
   if(PWM_timer_DMA_start() != HAL_OK)
@@ -222,39 +294,6 @@ int main(void)
 
   /* --- Print values of STATUS registers of all gate drivers ------------------*/
   printInverterStatus();
-
-
-
-//  uint32_t adc2_buf[5]; // Rank1 = CH11, Rank2 = CH14
-//  HAL_ADC_Start_DMA(&hadc2, adc2_buf, 5);
-
-  // Wait for conversion complete
-//  while(HAL_DMA_GetState(&hdma_adc2) != HAL_DMA_STATE_READY);
-
-  // Convert to voltage (assuming VDDA = 3.3V)
-//  float v_ch3 = (adc2_buf[0] * 3.3f) / 4095.0f;
-//  float v_ch4 = (adc2_buf[1] * 3.3f) / 4095.0f;
-//  float v_ch5 = (adc2_buf[2] * 3.3f) / 4095.0f;
-//  float v_ch11 = (adc2_buf[3] * 3.3f) / 4095.0f;
-//  float v_ch12 = (adc2_buf[4] * 3.3f) / 4095.0f;
-
-//    uint32_t adc3_buf[7]; // Rank1 = CH11, Rank2 = CH14
-//    HAL_ADC_Start_DMA(&hadc3, adc3_buf, 7);
-
-    // Wait for conversion complete
-//    while(HAL_DMA_GetState(&hdma_adc3) != HAL_DMA_STATE_READY);
-
-    // Convert to voltage (assuming VDDA = 3.3V)
-//    float v_ch2 = (adc3_buf[0] * 3.3f) / 4095.0f;
-//    float v_ch3 = (adc3_buf[1] * 3.3f) / 4095.0f;
-//    float v_ch4 = (adc3_buf[2] * 3.3f) / 4095.0f;
-//    float v_ch6 = (adc3_buf[3] * 3.3f) / 4095.0f;
-//    float v_ch14 = (adc3_buf[4] * 3.3f) / 4095.0f;
-//    float v_ch15 = (adc3_buf[5] * 3.3f) / 4095.0f;
-//    float v_ch16 = (adc3_buf[6] * 3.3f) / 4095.0f;
-
-//  GPIO_PinState DIN1 = HAL_GPIO_ReadPin(DIN_1_GPIO_Port, DIN_1_Pin);
-//  GPIO_PinState DIN2 = HAL_GPIO_ReadPin(DIN_2_GPIO_Port, DIN_2_Pin);
 
   UART_Transmit((uint8_t *)"\n\nSetup end\r\n", strlen("\n\nSetup end\r\n"));
 
@@ -657,6 +696,32 @@ static void MX_ADC3_Init(void)
 }
 
 /**
+  * @brief CORDIC Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_CORDIC_Init(void)
+{
+
+  /* USER CODE BEGIN CORDIC_Init 0 */
+
+  /* USER CODE END CORDIC_Init 0 */
+
+  /* USER CODE BEGIN CORDIC_Init 1 */
+
+  /* USER CODE END CORDIC_Init 1 */
+  hcordic.Instance = CORDIC;
+  if (HAL_CORDIC_Init(&hcordic) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN CORDIC_Init 2 */
+
+  /* USER CODE END CORDIC_Init 2 */
+
+}
+
+/**
   * @brief DAC1 Initialization Function
   * @param None
   * @retval None
@@ -847,11 +912,11 @@ static void MX_SPI4_Init(void)
   hspi4.Instance = SPI4;
   hspi4.Init.Mode = SPI_MODE_MASTER;
   hspi4.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi4.Init.DataSize = SPI_DATASIZE_16BIT;
-  hspi4.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi4.Init.DataSize = SPI_DATASIZE_14BIT;
+  hspi4.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi4.Init.CLKPhase = SPI_PHASE_2EDGE;
   hspi4.Init.NSS = SPI_NSS_SOFT;
-  hspi4.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_128;
+  hspi4.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
   hspi4.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi4.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi4.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -889,18 +954,18 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 0;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 4294967295;
+  htim2.Init.Period = 8191;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  sConfig.EncoderMode = TIM_ENCODERMODE_TI1;
+  sConfig.EncoderMode = TIM_ENCODERMODE_TI12;
   sConfig.IC1Polarity = TIM_ICPOLARITY_RISING;
   sConfig.IC1Selection = TIM_ICSELECTION_DIRECTTI;
   sConfig.IC1Prescaler = TIM_ICPSC_DIV1;
-  sConfig.IC1Filter = 0;
+  sConfig.IC1Filter = 8;
   sConfig.IC2Polarity = TIM_ICPOLARITY_RISING;
   sConfig.IC2Selection = TIM_ICSELECTION_DIRECTTI;
   sConfig.IC2Prescaler = TIM_ICPSC_DIV1;
-  sConfig.IC2Filter = 0;
+  sConfig.IC2Filter = 8;
   if (HAL_TIM_Encoder_Init(&htim2, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -1015,6 +1080,15 @@ static void MX_TIM8_Init(void)
   }
   /* USER CODE BEGIN TIM8_Init 2 */
 
+
+  // 1. Update the configuration structure
+  sBreakDeadTimeConfig.BreakState = TIM_BREAK_DISABLE;
+  sBreakDeadTimeConfig.Break2State = TIM_BREAK2_DISABLE;
+
+  // 2. Apply the configuration
+  HAL_TIMEx_ConfigBreakDeadTime(&htim8, &sBreakDeadTimeConfig);
+
+
   /* USER CODE END TIM8_Init 2 */
   HAL_TIM_MspPostInit(&htim8);
 
@@ -1095,6 +1169,12 @@ static void MX_DMA_Init(void)
   /* DMA1_Channel5_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Channel5_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel5_IRQn);
+  /* DMA1_Channel6_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
+  /* DMA1_Channel7_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel7_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel7_IRQn);
 
 }
 
@@ -1220,6 +1300,14 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 	;
 }
 
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+    if (GPIO_Pin == Encoder_Z_Pin)
+    {
+        __HAL_TIM_SET_COUNTER(&htim2, 0);
+    }
+}
+
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartDefaultTask */
@@ -1235,7 +1323,7 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+	  osDelay(1);
   }
   /* USER CODE END 5 */
 }
@@ -1309,8 +1397,8 @@ void AnalogReadTask(void *argument)
 	/* Infinite loop */
 	for(;;)
 	{
-		uint32_t adc_buf[2]; 	/* [0] - Rank 1 - AIN1 - CH14 */
-								/* [1] - Rank 2 - AIN2 - CH11 */
+		uint32_t adc_buf[2]; /* [0] - Rank 1 - AIN1 - CH14 */
+							 /* [1] - Rank 2 - AIN2 - CH11 */
 
 		HAL_ADC_Start_DMA(&hadc1, adc_buf, 2);
 
@@ -1330,7 +1418,7 @@ void AnalogReadTask(void *argument)
 	                           (AIN[i].raw > max) ? max :
 	                           AIN[i].raw;
 
-	        AIN[i].percentage = ((clipped - min) * 100UL) / range;
+	        AIN[i].percentage = (clipped - min) / range;
 	    }
 
 		osDelay(100);
@@ -1352,7 +1440,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   if(htim->Instance == TIM8)
   {
 	  RampGen_step(&rg);
-	  FOC_run();
+
+	  FOC_run(&motor, &rg);
   }
   /* USER CODE END Callback 0 */
   if (htim->Instance == TIM6)

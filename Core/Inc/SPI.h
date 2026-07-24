@@ -45,16 +45,17 @@ HAL_StatusTypeDef SPI_TransmitReceive_Driver(uint8_t *pTxData, uint8_t *pRxData,
  * @param[in]  pTxData - Pointer to transmit data buffer.
  * @param[out] pRxData - Pointer to receive data buffer.
  * @param[in]  Size    - Number of frames to transmit/receive
- * @param[in]  Timeout - Timeout duration in milliseconds
  *
  * @return HAL_StatusTypeDef
  *         - HAL_OK on success
  *         - HAL_ERROR on SPI error
- *         - HAL_TIMEOUT if operation times out
+ *         - HAL_BUSY if SPI transfer is already in progress
  *
  * @note The SPI4 peripheral must be initialized before calling this function
- * @warning This function is blocking; use it only when timing requirements allow it.
+ * @note This function is non-blocking.
  */
-HAL_StatusTypeDef SPI_TransmitReceive_Encoder(uint8_t *pTxData, uint8_t *pRxData, uint16_t Size, uint32_t Timeout);
+HAL_StatusTypeDef SPI_TransmitReceive_Encoder(uint8_t *pTxData, uint8_t *pRxData, uint16_t Size);
+
+HAL_SPI_StateTypeDef SPI_get_encoder_state();
 
 #endif /* _SPI_H_ */

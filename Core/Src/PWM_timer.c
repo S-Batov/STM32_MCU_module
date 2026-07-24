@@ -10,11 +10,39 @@
 #include "UART.h"
 
 #define SINE_TABLE_SIZE 256
-#define PWM_MAX_DUTY    3999    // ARR value for 16 kHz PWM (0..3999)
+#define PWM_MAX_DUTY    3999 // ARR value for 16 kHz PWM (0..3999)
 
 static uint16_t sine_dma_buffer[SINE_TABLE_SIZE * 3];
 
 extern TIM_HandleTypeDef htim8;
+PWM_data_pu pwm_data;
+
+void PWM_data_init(float duty, float mod_lim)
+{
+	pwm_data.duty_cycle_uvw[0] = duty;
+	pwm_data.duty_cycle_uvw[1] = duty;
+	pwm_data.duty_cycle_uvw[2] = duty;
+
+	pwm_data.modulation_limit = mod_lim;
+}
+
+/**
+ * @brief Clamp the PWM duty cycle to the modulation limit
+ */
+void data_clamp()
+{
+    pwm_data.duty_cycle_uvw[0] =
+    		fmaxf(fminf(pwm_data.duty_cycle_uvw[0], pwm_data.modulation_limit),
+    			 -pwm_data.modulation_limit);
+
+    pwm_data.duty_cycle_uvw[1] =
+    		fmaxf(fminf(pwm_data.duty_cycle_uvw[1], pwm_data.modulation_limit),
+    			 -pwm_data.modulation_limit);
+
+    pwm_data.duty_cycle_uvw[2] =
+    		fmaxf(fminf(pwm_data.duty_cycle_uvw[2], pwm_data.modulation_limit),
+    			 -pwm_data.modulation_limit);
+}
 
 /**
  * @brief Main output disable
@@ -114,11 +142,6 @@ HAL_StatusTypeDef PWM_timer_start(void)
 	/* --- 1. Disable the Main Output Enable (MOE) to safely configure outputs ---*/
 	PWM_timer_MOE_disable();
 
-	while (UART_is_ready() == UART_NOT_READY)
-	  {
-	  }
-	HAL_Delay(1); // give bus time to settle
-
 	/* --- 2. Starts TIM8 base counter and all PWM channels ----------------------*/
 	if(HAL_TIM_Base_Start(&htim8) != HAL_OK)
 		goto PWM_start_error;
@@ -164,3 +187,29 @@ PWM_start_error:
 	HAL_TIMEx_PWMN_Stop(&htim8, TIM_CHANNEL_3);
 	return HAL_ERROR;
 }
+
+void PWM_timer_write_data_to_reg()
+{
+	data_clamp();
+
+	TIM8->CCR1 = (uint16_t) ((2000 * pwm_data.duty_cycle_uvw[0]) + 2000);
+	TIM8->CCR2 = (uint16_t) ((2000 * pwm_data.duty_cycle_uvw[1]) + 2000);
+	TIM8->CCR3 = (uint16_t) ((2000 * pwm_data.duty_cycle_uvw[2]) + 2000);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -15,20 +15,27 @@
 
 #define ADC_MAX_VAL_12B 4095
 
+/* --- Analog input structure ------------------------------------------------*/
 typedef struct {
     GPIO_TypeDef *port;
     uint16_t pin;
-	uint32_t raw;
-	uint32_t max;
-	uint32_t min;
-	float percentage;
+	volatile uint32_t raw;		/* Raw ADC value 0-4095 */
+	uint32_t max;		/* Calibrated  maximum expected value */
+	uint32_t min;		/* Calibrated minimum expected value  */
+	volatile float percentage;	/* ADC value as percentage of range 0.0 - 1.0 */
 } Analog_IN;
 
+extern Analog_IN AIN[AIN_NUM];
+
+/* --- Digital input structure -----------------------------------------------*/
 typedef struct {
     GPIO_TypeDef *port;
     uint16_t pin;
 } Digital_IN;
 
+extern Digital_IN DIN[DIN_NUM];
+
+/* --- Digital output structure ----------------------------------------------*/
 typedef struct {
     GPIO_TypeDef *port;
     uint16_t pin;
@@ -40,48 +47,6 @@ typedef struct {
     uint16_t fb_pin;
 } Digital_OUT;
 
-Analog_IN AIN[AIN_NUM] =
-{
-	[0] = { AIN_1_GPIO_Port, /* port */
-			AIN_1_Pin,       /* pin */
-			0,               /* raw */
-			ADC_MAX_VAL_12B, /* max */
-			0,               /* min */
-			0                /* percentage */
-		},
-
-	[1] = { AIN_2_GPIO_Port, /* port */
-			AIN_2_Pin,       /* pin */
-			0,               /* raw */
-			ADC_MAX_VAL_12B, /* max */
-			0,               /* min */
-			0                /* percentage */
-		}
-};
-
-Digital_IN DIN[DIN_NUM] =
-{
-	[0] = { DIN_1_GPIO_Port, DIN_1_Pin },
-	[1] = { DIN_2_GPIO_Port, DIN_2_Pin }
-};
-
-Digital_OUT DOUT[DOUT_NUM] =
-{
-	[0] = { DOUT_1_GPIO_Port,    /* port */
-			DOUT_1_Pin,          /* pin */
-			DOUT_1_EN_GPIO_Port, /* en_port */
-			DOUT_1_EN_Pin,       /* en_pin */
-			DOUT_1_FB_GPIO_Port, /* fb_port */
-			DOUT_1_FB_Pin        /* fb_pin */
-		},
-
-	[1] = { DOUT_2_GPIO_Port,    /* port */
-			DOUT_2_Pin,          /* pin */
-			DOUT_2_EN_GPIO_Port, /* en_port */
-			DOUT_2_EN_Pin,       /* en_pin */
-			DOUT_2_FB_GPIO_Port, /* fb_port */
-			DOUT_2_FB_Pin        /* fb_pin */
-		}
-};
+extern Digital_OUT DOUT[DOUT_NUM];
 
 #endif /* _GPIO_status_H_ */

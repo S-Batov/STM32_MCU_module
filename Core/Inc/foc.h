@@ -9,9 +9,18 @@
 
 #include "main.h"
 #include <stdint.h>
+#include "RampGen.h"
 
 //#define ADC2_CH_NUM 5
 #define ADC3_CH_NUM 7
+
+/// FOC status enumeration
+typedef enum {
+	FOC_ALL_GOOD = 0,
+	FOC_INIT_FAULT = 1,
+	FOC_STATUS_FAULT = 2,
+} FOC_Status_e;
+
 
 //uint16_t ADC2_DMA_buff[ADC2_CH_NUM];
 extern uint16_t ADC3_DMA_buff[ADC3_CH_NUM];
@@ -24,43 +33,66 @@ extern uint16_t ADC3_DMA_buff[ADC3_CH_NUM];
 #define I_DC_LO 5 /* Rank 6 - CH6  */
 #define V_DC    6 /* Rank 7 - CH3  */
 
-//typedef struct _Motor_t_
-//{
-//    float32_t Ls_d;  /* D-axis inductance */
-//    float32_t Ls_q;  /* Q-axis inductance */
-//    float32_t Rs;    /* Stator resistance */
-//    float32_t Phi_e; /* Permanent magnet flux linkage */
-//    				 /* Motor parameter, used in decoupling function */
-//
-//    float32_t I_abc_A[3]; /* Phase currents */
-//    float32_t V_abc_V[3]; /* Phase voltages */
-//
-//    float32_t I_scale;
-//    float32_t V_scale;
-//
-//    float32_t dcBus_V;           /* DC link voltage */
-//    float32_t oneOverDcBus_invV; /* inverse of DC link voltage */
-//
-//    float32_t I_ab_A[2]; /* Currents in the alpha-beta reference frame */
-//    float32_t I_dq_A[2]; /* Currents in the D-Q reference frame */
-//
-//    float32_t theta_e; /* Rotor angle */
-//    float32_t omega_e; /* Rotor speed */
-//
-//    float32_t Sine;
-//    float32_t Cosine;
-//
-//    float32_t Vff_dq_V[2];          //!< PI_dq FF value for decoupling
-//    float32_t Vout_dq_V[2];         //!< the current values
-//    float32_t Vout_ab_V[2];         //!< the current values
-//
-//    PI_Obj pi_id;
-//    PI_Obj pi_iq;
-//
-//    float32_t vqLimit;
-//    float32_t modulationLimitSquare;
-//} Motor_t;
+typedef struct
+{
+    float Kp;         /* Proportional gain for the PI controller      */
+    float Ki;         /* Integral gain for the PI controller          */
+    float Ui;         /* Integrator start value for the PI controller */
 
+    float refValue;   /* Reference input value   */
+    float fbackValue; /* Feedback input value    */
+    float ffwdValue;  /* Feedforward input value */
+    float outMin;     /* Minimum output value allowed for the PI controller */
+    float outMax;     /* Maximum output value allowed for the PI controller */
+} PI_Obj;
+
+typedef struct
+{
+	  /* --- Motor parameters / constants ------------------------------------------*/
+    float Ls_d;          /* D-axis inductance */
+    float Ls_q;          /* Q-axis inductance */
+    float Rs;            /* Stator resistance */
+    float Phi_e;         /* Permanent magnet flux linkage */
+                         /* Motor parameter, used in decoupling function */
+    uint16_t pole_pairs; /* Motor parameter, used to convert mechanical to electrical angle */
+
+    float I_uvw_A[3]; /* Measured phase currents */
+    float V_uvw_V[3]; /* Phase voltages */
+                      /* Unused */
+
+    float I_scale; /* Scaling factor for current measurements */
+    float V_scale; /* Scaling factor for DC link voltage measurement */
+
+    float dcBus_V;           /* DC link voltage */
+    float oneOverDcBus_invV; /* inverse of DC link voltage */
+
+    float I_ab_A[2]; /* Currents in the alpha-beta reference frame */
+    float I_dq_A[2]; /* Currents in the D-Q reference frame        */
+
+    uint32_t encoder_count; /* Rising edge count of the ABZ encoder */
+    float theta_e; /* Rotor ELECTRICAL angle in PU */
+    float omega_e; /* Rotor ELECTRICAL speed in rad/s */
+
+    float Sine;   /* Sine of the theta value   */
+    float Cosine; /* Cosine of the theta value */
+
+    float Vff_dq_V[2];  /* PI_dq FF value after decoupling                */
+    float Vout_dq_V[2]; /* Corrective voltages Vd and Vq after PI control */
+    float Vout_ab_V[2]; /* Valpha and Vbeta, after inverse park transform */
+
+    PI_Obj pi_id; /* Id PI regulator */
+    PI_Obj pi_iq; /* Iq PI regulator */
+
+    float vqLimit;				 /* Unused */
+    float modulationLimitSquare; /* Unused */
+} Motor_t;
+
+/**
+ * @brief Initialize the motor struct with default parameters
+ *
+ * @param motor [in/out] - Pointer to motor struct to be initialized
+ */
+void FOC_motor_init(Motor_t *motor);
 
 /**
  * @brief Start sampling of ADC3 (phase currents, DC link) on
@@ -68,28 +100,10 @@ extern uint16_t ADC3_DMA_buff[ADC3_CH_NUM];
  *
  * @note This function should be called before starting the PWM timer
  */
-void FOC_start_ADC_DMA(void);
-/**
- * @brief Run the FOC algorithm
- *
- * @note This function should be called when TIM8_UP interrupt is generated
- *
- * TIM8 generates a TIM8_UP interrupt when PWM reaches 0 or ARR. At that point
- * TIM8 generates a TRGO event, which is used to start ADC sampling of phase currents
- * and DC link voltage and current.
- *
- * TODO: Use the TRGO event to obtain the rotor angle
- *
- * The algorithm steps are as follows:
- *  1. Obtain U, V, W and DC values and rotor angle
- *  2. Generate Iq and Id reference values (from torque request)
- *  3. Using Clarke-Parke transforms transform U, V, W currents to Iq and Id
- *  4. Calculate the Iq and Id error between reference and measured values
- *  5. Generate correction voltage Vq and Vd
- *  6. Generate the feed-forward correction voltage (decoupling, losses, back EMF...)
- *  7. Using inverse Clarke-Parke transforms transform the correction voltage to U, V, W voltages
- *  8. Compare the correction voltages to DC link voltage and generate PWM duty cycle for U, V, W
- */
-void FOC_run(void);
+HAL_StatusTypeDef FOC_start_ADC_DMA(void);
+
+FOC_Status_e FOC_encoder_init(Motor_t *motor);
+
+void FOC_run(Motor_t *motor, RampGen *rg);
 
 #endif /* _FOC_H_ */
